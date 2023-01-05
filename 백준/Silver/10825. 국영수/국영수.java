@@ -6,10 +6,6 @@ import java.util.Comparator;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int[] temp;
-	static int result = -1;
-	static int count = 0;
-	static int k;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
