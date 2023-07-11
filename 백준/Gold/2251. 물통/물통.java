@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.security.cert.TrustAnchor;
 import java.util.*;
 
 public class Main {
@@ -43,46 +42,47 @@ public class Main {
 
             // 첫 번째 물통에서 두 번째 물통으로 물 붓기
             if (a + b > B) {
-                queue.offer(new int[]{a + b - B, B, c});
+                queue.add(new int[]{a + b - B, B, c});
             } else {
                 queue.add(new int[]{0, a + b, c});
             }
 
             // 첫 번째 물통에서 세 번째 물통으로 물 붓기
             if (a + c > C) {
-                queue.offer(new int[]{a + c - C, b, C});
+                queue.add(new int[]{a + c - C, b, C});
             } else {
-                queue.offer(new int[]{0, b, a + c});
+                queue.add(new int[]{0, b, a + c});
             }
 
             // 두 번째 물통에서 첫 번째 물통으로 물 붓기
             if (b + a > A) {
-                queue.offer(new int[]{A, b + a - A, c});
+                queue.add(new int[]{A, b + a - A, c});
             } else {
-                queue.offer(new int[]{b + a, 0, c});
+                queue.add(new int[]{b + a, 0, c});
             }
 
             // 두 번째 물통에서 세 번째 물통으로 물 붓기
             if (b + c > C) {
-                queue.offer(new int[]{a, b + c - C, C});
+                queue.add(new int[]{a, b + c - C, C});
             } else {
-                queue.offer(new int[]{a, 0, b + c});
+                queue.add(new int[]{a, 0, b + c});
             }
 
             // 세 번째 물통에서 첫 번째 물통으로 물 붓기
             if (c + a > A) {
-                queue.offer(new int[]{A, b, c + a - A});
+                queue.add(new int[]{A, b, c + a - A});
             } else {
-                queue.offer(new int[]{c + a, b, 0});
+                queue.add(new int[]{c + a, b, 0});
             }
 
             // 세 번째 물통에서 두 번째 물통으로 물 붓기
             if (c + b > B) {
-                queue.offer(new int[]{a, B, c + b - B});
+                queue.add(new int[]{a, B, c + b - B});
             } else {
-                queue.offer(new int[]{a, c + b, 0});
+                queue.add(new int[]{a, c + b, 0});
             }
         }
     }
 
 }
+
