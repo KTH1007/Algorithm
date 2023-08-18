@@ -15,14 +15,17 @@ public class Main {
         dp[1] = 1;
         dp[2] = 2;
         dp[3] = 4;  //3을 나타내는 방법 1+1+1,  1+2, 2+1, 3
+        for (int i = 4; i <= 1000000; i++) {
+            dp[i] = (dp[i - 1] + dp[i - 2] + dp[i - 3]) % 1000000009;
+        }
         while (t-- > 0) {
             n = Integer.parseInt(br.readLine());
-            for (int i = 4; i <= n; i++) {
-                dp[i] = (dp[i - 1] + dp[i - 2] + dp[i - 3]) % 1000000009;
-            }
             sb.append(dp[n]).append("\n");
         }
         System.out.println(sb);
     }
 
 }
+
+
+
