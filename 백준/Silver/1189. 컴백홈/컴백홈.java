@@ -1,54 +1,50 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int[][] visited;
+
+    static int r, c, k;
     static char[][] arr;
-    static int r;
-    static int c;
-    static int k;
-    static int[] dx = {-1, 1, 0, 0};
-    static int[] dy = {0, 0, 1, -1};
+    static boolean[][] visited;
     static int count = 0;
-    static StringBuilder sb = new StringBuilder();
-    public static void main(String[] args) throws IOException {
+    static int[] dx = {0, 0, -1, 1};
+    static int[] dy = {1, -1, 0, 0};
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         r = Integer.parseInt(st.nextToken());
         c = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
         arr = new char[r][c];
-        visited = new int[r][c];
-        for(int i=0; i<r; i++){
+        visited = new boolean[r][c];
+        for (int i = 0; i < r; i++) {
             String s = br.readLine();
-            arr[i] = s.toCharArray();
+            for (int j = 0; j < c; j++) {
+                arr[i][j] = s.charAt(j);
+            }
         }
-        visited[r-1][0] = 1;
-        DFS(1, r-1, 0);
+        visited[r - 1][0] = true;
+        dfs(1, r - 1, 0);
         System.out.println(count);
     }
 
-    static void DFS(int depth, int R, int C){
-        if(R == 0 && C == c-1 ){
-            if(k == depth)
-                count++;
+    static void dfs(int depth, int x, int y) {
+        if (x == 0 && y == c - 1) {
+            if (depth == k) count++;
             return;
         }
-        for(int i=0; i<4; i++){
-            int nx = R + dx[i];
-            int ny = C + dy[i];
-            if(nx < 0 || ny < 0 || nx >= r || ny >= c)
-                continue;
-            if(visited[nx][ny] == 1 || arr[nx][ny] == 'T')
-                continue;
-            visited[nx][ny] = 1;
-            DFS(depth+1, nx, ny);
-            visited[nx][ny] = 0;
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if (nx >= 0 && nx < r && ny >= 0 && ny < c && !visited[nx][ny] && arr[nx][ny] != 'T') {
+                visited[nx][ny] = true;
+                dfs(depth + 1, nx, ny);
+                visited[nx][ny] = false;
+            }
         }
-
     }
+
 
 }
