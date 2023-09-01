@@ -1,43 +1,51 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
-    private static int k; // 부등호 문자의 개수(2 ≤ k ≤ 9)
-    private static boolean[] isVisited = new boolean[10]; // 0~9 숫자방문여부 (중복숫자불가하므로)
-    private static char[] signs;
-    private static List<String> result = new ArrayList<>();
+    static int n;
+    static char[] arr;
+    static boolean[] visited;
+    static List<String> result = new ArrayList<>();
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        k = sc.nextInt();
-        signs = new char[k];
-        for (int i = 0; i < k; i++) {
-            signs[i] = sc.next().charAt(0);
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(br.readLine());
+        arr = new char[n];
+        visited = new boolean[10];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            arr[i] = st.nextToken().charAt(0);
         }
-        dfs("", 0);
+        dfs(0, "");
         Collections.sort(result);
-        System.out.println(result.get(result.size() - 1)); //최댓값
-        System.out.println(result.get(0)); //최솟값
+        System.out.println(result.get(result.size() - 1));
+        System.out.println(result.get(0));
     }
 
-    private static void dfs(String num, int depth) { //처음 nums를 int[]로 접근했는데 String으로 하는게 간단해진다.
-        if (depth == k + 1) {
+    static void dfs(int depth, String num) {
+        if (depth == n + 1) {
             result.add(num);
             return;
         }
-        for (int i = 0; i <= 9; i++) {
-            if (depth == 0 || !isVisited[i] && compare(num.charAt(num.length() - 1) - '0', i, signs[depth - 1])) { //처음건 비교할게없으므로 통과 || 방문안한숫자 && 비교
-                isVisited[i] = true;
-                dfs(num + i, depth + 1);
-                isVisited[i] = false;
+        for (int i = 0; i < 10; i++) {
+            if (depth == 0 || !visited[i] && compare(num.charAt(num.length() - 1) - '0', i, arr[depth - 1])) {
+                visited[i] = true;
+                dfs(depth + 1, num + i);
+                visited[i] = false;
             }
         }
+
     }
 
-    private static boolean compare(int a, int b, char c) {
+    static boolean compare(int a, int b, char c) {
         if (c == '<') return a < b;
         else return a > b;
     }
+
+
 }
