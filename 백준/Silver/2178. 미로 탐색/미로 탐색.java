@@ -1,48 +1,60 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int n,m;
-    static int[][] arr;
+    static int n, m;
+    static char[][] arr;
     static boolean[][] visited;
-    static int[] dx = {1,-1,0,0};
-    static int[] dy = {0,0,1,-1};
-    static int min = Integer.MAX_VALUE;
-    public static void main(String[] args) throws Exception{
+    static int result = Integer.MAX_VALUE;
+    static int[] dx = {0, 0, -1, 1};
+    static int[] dy = {1, -1, 0, 0};
+    static int[][] depth;
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
-        arr = new int[n][m];
+        arr = new char[n][m];
         visited = new boolean[n][m];
-        for(int i=0; i<n; i++){
+        depth = new int[n][m];
+
+        for (int i = 0; i < n; i++) {
             String s = br.readLine();
-            for(int j=0; j<m; j++){
-                arr[i][j] = s.charAt(j) - '0';
+            for (int j = 0; j < m; j++) {
+                arr[i][j] = s.charAt(j);
             }
         }
-        BFS(0,0);
-        System.out.println(arr[n-1][m-1]);
+
+        bfs();
+        System.out.println(depth[n - 1][m - 1] + 1); //시작 위치 + 1
+
     }
-    static void BFS(int x, int y){
-        Queue<int []> queue = new LinkedList<>();
-        queue.add(new int[] {x, y});
-        visited[x][y] = true;
-        while (!queue.isEmpty()){
+
+    static void bfs() {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{0, 0});
+        visited[0][0] = true;
+        int count = 1;
+        while (!queue.isEmpty()) {
             int[] current = queue.poll();
-            if(current[0] == n-1 && current[1] == m-1)
-                break;
-            for(int i=0; i<4; i++){
-                int nx = current[0] + dx[i];
-                int ny = current[1] + dy[i];
-                if(nx >= 0 && nx <n && ny >= 0 && ny < m && arr[nx][ny] == 1 && !visited[nx][ny]){
+            int x = current[0];
+            int y = current[1];
+            for (int i = 0; i < 4; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+                if (nx >= 0 && nx < n && ny >= 0 && ny < m && !visited[nx][ny] && arr[nx][ny] == '1') {
                     visited[nx][ny] = true;
-                    queue.add(new int[] {nx, ny});
-                    arr[nx][ny] = arr[current[0]][current[1]] + 1;
+                    count++;
+                    queue.add(new int[]{nx, ny});
+                    depth[nx][ny] = depth[x][y] + 1;
                 }
             }
         }
     }
-}
 
+
+}
