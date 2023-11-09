@@ -6,68 +6,65 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static long s, t;
+    static final long limit = 1000000000L;
+    static int s, t;
+    static String result = "-1";
     static HashSet<Long> set = new HashSet<>();
-    static String[] order = {"*", "+", "-", "/"};
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         s = Integer.parseInt(st.nextToken());
         t = Integer.parseInt(st.nextToken());
-        BFS();
-    }
-
-    static void BFS() {
         if (s == t) {
             System.out.println(0);
             return;
         }
+        bfs();
+        System.out.println(result);
+
+    }
+
+    static void bfs() {
         Queue<Num> queue = new LinkedList<>();
         queue.add(new Num(s, ""));
-        set.add(s);
+        set.add((long) s);
         while (!queue.isEmpty()) {
             Num current = queue.poll();
             long currentNum = current.num;
             String currentHistory = current.history;
-            long next = currentNum;
             if (currentNum == t) {
-                System.out.println(currentHistory);
+                result = currentHistory;
                 return;
             }
-            for (int i = 0; i < 4; i++) {
-                switch (i) {
-                    case 0:
-                        next = currentNum * currentNum;
-                        break;
-                    case 1:
-                        next = currentNum + currentNum;
-                        break;
-                    case 2:
-                        next = 0;
-                        break;
-                    case 3:
-                        if (currentNum != 0) next = 1;
-                        break;
-                }
-
-                if (!set.contains(next)) {
-                    set.add(next);
-                    queue.add(new Num(next, currentHistory + order[i]));
-                }
+            if (currentNum * currentNum <= limit && !set.contains(currentNum * currentNum)) {
+                queue.add(new Num(currentNum * currentNum, currentHistory + "*"));
+                set.add(currentNum * currentNum);
+            }
+            if (currentNum + currentNum <= limit && !set.contains(currentNum + currentNum)) {
+                queue.add(new Num(currentNum + currentNum, currentHistory + "+"));
+                set.add(currentNum + currentNum);
+            }
+            if (!set.contains(0L)) {
+                queue.add(new Num(0, currentHistory + "-"));
+                set.add(0L);
+            }
+            if (currentNum != 0 && !set.contains(1L)) {
+                queue.add(new Num(1, currentHistory + "/"));
+                set.add(1L);
             }
         }
-        System.out.println(-1);
     }
 
     static class Num {
         long num;
-        String history = "";
+        String history;
 
         Num(long num, String history) {
             this.num = num;
             this.history = history;
         }
     }
+
 
 }
