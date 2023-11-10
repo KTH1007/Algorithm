@@ -6,7 +6,8 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int n, k;
-    static int[][] arr;
+    static int[][] bridge;
+    static boolean flag = false;
     static boolean[][] visited;
 
     public static void main(String[] args) throws Exception {
@@ -14,64 +15,68 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
+        bridge = new int[2][n];
         visited = new boolean[2][n];
-        arr = new int[2][n];
-        String s = br.readLine();
-        for (int i = 0; i < n; i++) {
-            arr[0][i] = s.charAt(i) - '0';
+
+        for (int i = 0; i < 2; i++) {
+            String s = br.readLine();
+            for (int j = 0; j < n; j++) {
+                bridge[i][j] = s.charAt(j) - '0';
+            }
         }
-        s = br.readLine();
-        for (int i = 0; i < n; i++) {
-            arr[1][i] = s.charAt(i) - '0';
-        }
-        BFS();
+
+        bfs();
+
+        if (flag) System.out.println(1);
+        else System.out.println(0);
     }
 
-    static void BFS() {
+    static void bfs() {
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[]{0, 0, 0});
         while (!queue.isEmpty()) {
             int[] current = queue.poll();
-            int flag = current[2];  //0이면 왼쪽 1이면 오른쪽
-            int time = current[1];
-            int go = current[0] + 1;
-            int back = current[0] - 1;
-            int swap = current[0] + k;
-
+            int x = current[0];
+            int go = current[1] + 1;
+            int back = current[1] - 1;
+            int swap = current[1] + k;
+            int time = current[2];
             if (go >= n || swap >= n) {
-                System.out.println(1);
+                flag = true;
                 return;
             }
-            if (flag == 0) {
-                if (arr[0][go] == 1 && time + 1 <= go && !visited[0][go]) {
+            if (x == 0) {
+                if (bridge[0][go] == 1 && time + 1 <= go && !visited[0][go]) {
                     visited[0][go] = true;
-                    queue.add(new int[]{go, time + 1, 0});
+                    queue.add(new int[]{0, go, time + 1});
                 }
 
-                if (back >= 0 && arr[0][back] == 1 && time + 1 <= back && !visited[0][back]) {
+                if (back >= 0 && time + 1 <= back && bridge[0][back] == 1 && !visited[0][back]) {
                     visited[0][back] = true;
-                    queue.add(new int[]{back, time + 1, 0});
+                    queue.add(new int[]{0, back, time + 1});
                 }
-                if (arr[1][swap] == 1 && time + 1 <= swap && !visited[1][swap]) {
+
+                if (bridge[1][swap] == 1 && time + 1 <= swap && !visited[1][swap]) {
                     visited[1][swap] = true;
-                    queue.add(new int[]{swap, time + 1, 1});
+                    queue.add(new int[]{1, swap, time + 1});
                 }
             } else {
-                if (arr[1][go] == 1 && time + 1 <= go && !visited[1][go]) {
+                if (bridge[1][go] == 1 && time + 1 <= go && !visited[1][go]) {
                     visited[1][go] = true;
-                    queue.add(new int[]{go, time + 1, 1});
+                    queue.add(new int[]{1, go, time + 1});
                 }
-                if (back >= 0 && arr[1][back] == 1 && time + 1 <= back && !visited[1][back]) {
+
+                if (back >= 0 && bridge[1][back] == 1 && time + 1 <= back && !visited[1][back]) {
                     visited[1][back] = true;
-                    queue.add(new int[]{back, time + 1, 1});
+                    queue.add(new int[]{1, back, time + 1});
                 }
-                if (arr[0][swap] == 1 && time + 1 <= swap && !visited[0][swap]) {
+
+                if (bridge[0][swap] == 1 && time + 1 <= swap && !visited[0][swap]) {
                     visited[0][swap] = true;
-                    queue.add(new int[]{swap, time + 1, 0});
+                    queue.add(new int[]{0, swap, time + 1});
                 }
             }
         }
-        System.out.println(0);
     }
 
 }
