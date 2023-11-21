@@ -3,8 +3,8 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static int n, k, s, x, y;
-    static int[][] arr;
+    static int n, k, s;
+    static int[][] map;
     static int[] dx = {0, 0, -1, 1};
     static int[] dy = {1, -1, 0, 0};
     static Queue<Node> queue = new LinkedList<>();
@@ -14,34 +14,33 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
-        arr = new int[n][n];
-        List<Node> list = new LinkedList<>();
+
+        map = new int[n][n];
+        List<Node> list = new ArrayList<>();
+
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < n; j++) {
-                arr[i][j] = Integer.parseInt(st.nextToken());
-                if (arr[i][j] != 0) {
-                    list.add(new Node(i, j, arr[i][j], 0));
+                int a = Integer.parseInt(st.nextToken());
+                map[i][j] = a;
+                if (a != 0) {
+                    list.add(new Node(i, j, a, 0));
                 }
             }
         }
-        Collections.sort(list, new Comparator<Node>() {
-            @Override
-            public int compare(Node o1, Node o2) {
-                return o1.virus - o2.virus;
-            }
-        });
-        for (Node node : list) {
-            queue.add(node);
-        }
+
+        Collections.sort(list, (o1, o2) -> o1.virus - o2.virus);
+
+        for (Node node : list) queue.add(node);
 
         st = new StringTokenizer(br.readLine());
         s = Integer.parseInt(st.nextToken());
-        x = Integer.parseInt(st.nextToken());
-        y = Integer.parseInt(st.nextToken());
-        bfs();
+        int x = Integer.parseInt(st.nextToken()) - 1;
+        int y = Integer.parseInt(st.nextToken()) - 1;
 
-        System.out.println(arr[x - 1][y - 1]);
+        bfs();
+        System.out.println(map[x][y]);
+
 
     }
 
@@ -52,26 +51,23 @@ public class Main {
             for (int i = 0; i < 4; i++) {
                 int nx = current.x + dx[i];
                 int ny = current.y + dy[i];
-                if (nx >= 0 && nx < n && ny >= 0 && ny < n && arr[nx][ny] == 0) {
-                    arr[nx][ny] = current.virus;
+                if (nx >= 0 && nx < n && ny >= 0 && ny < n && map[nx][ny] == 0) {
+                    map[nx][ny] = current.virus;
                     queue.add(new Node(nx, ny, current.virus, current.time + 1));
                 }
             }
         }
     }
 
-    static class Node {
-        int x, y, virus, time;
-
-        public Node(int x, int y, int virus, int time) {
-            this.x = x;
-            this.y = y;
-            this.virus = virus;
-            this.time = time;
-        }
-    }
-
-
 }
 
+class Node {
+    int x, y, virus, time;
 
+    Node(int x, int y, int virus, int time) {
+        this.x = x;
+        this.y = y;
+        this.virus = virus;
+        this.time = time;
+    }
+}
