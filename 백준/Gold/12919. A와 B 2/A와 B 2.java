@@ -1,38 +1,34 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
 
 public class Main {
-    static int k;
-    static String s, t;
-    static int result;
-    public static void main(String[] args) throws IOException {
+    static int result = 0;
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        s = br.readLine();
-        t = br.readLine();
-        k = t.length();
-        result = dfs(s, t);
+        String s = br.readLine();
+        String t = br.readLine();
+        ab(s, t);
+
         System.out.println(result);
     }
-    public static int dfs(String s, String t) {
+
+    static void ab(String s, String t) {
         if (s.length() == t.length()) {
-            if (s.equals(t)) {
-                return 1;
-            }
-            return 0;
+            if (s.equals(t)) result = 1;
+            return;
         }
-        int ans = 0;
+        if (t.charAt(t.length() - 1) == 'A') {
+            ab(s, t.substring(0, t.length() - 1));
+        }
         if (t.charAt(0) == 'B') {
-            String substring = t.substring(1);
-            StringBuilder sb = new StringBuilder(substring);
-            String string = sb.reverse().toString();
-            ans += dfs(s, string);
+            StringBuilder sb = new StringBuilder();
+            t = sb.append(t).reverse().toString();
+            ab(s, t.substring(0, t.length() - 1));
         }
 
-        if (t.charAt(t.length() - 1) == 'A') {
-            ans += dfs(s, t.substring(0, t.length() - 1));
-        }
-        return ans > 0 ? 1 : 0;
     }
+
+
 }
+
