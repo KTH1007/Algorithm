@@ -1,49 +1,52 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.StringTokenizer;
 
 public class Main {
+    static int diff = Integer.MAX_VALUE;
     static int n;
     static int[][] food;
     static boolean[] visited;
-    static int diff;
-    static StringBuilder sb = new StringBuilder();
-    public static void main(String[] args) throws IOException {
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(br.readLine());
         food = new int[n][2];
-        for(int i=0; i<n; i++){
-            st = new StringTokenizer(br.readLine());
+        visited = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
             food[i][0] = Integer.parseInt(st.nextToken());
             food[i][1] = Integer.parseInt(st.nextToken());
         }
-        visited = new boolean[n];
-        diff = Integer.MAX_VALUE;
-        DFS(0);
+        dfs(0);
         System.out.println(diff);
     }
-    static void DFS(int depth){
-        if(depth == n){
+
+    static void dfs(int depth) {
+        if (depth == n) {
             int s = 1;
             int b = 0;
             int count = 0;
-            for(int i=0; i<visited.length; i++){
-                if(visited[i]){
+            for (int i = 0; i < n; i++) {
+                if (visited[i]) {
                     count++;
                     s *= food[i][0];
                     b += food[i][1];
                 }
             }
-            if(count == 0) return;
-            if(diff > Math.abs(s - b))
-                diff = Math.abs(s - b);
+            if (count == 0) return;
+            diff = Math.min(diff, Math.abs(s - b));
             return;
         }
+        //음식 선택
         visited[depth] = true;
-        DFS(depth+1);
+        dfs(depth + 1);
+        //음선 미선택
         visited[depth] = false;
-        DFS(depth+1);
+        dfs(depth + 1);
     }
 }
+
+
+
+
