@@ -6,9 +6,8 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static final long limit = 1000000000L;
     static int s, t;
-    static String result = "-1";
+    static boolean flag = false;
     static HashSet<Long> set = new HashSet<>();
 
     public static void main(String[] args) throws Exception {
@@ -18,53 +17,51 @@ public class Main {
         t = Integer.parseInt(st.nextToken());
         if (s == t) {
             System.out.println(0);
-            return;
+        } else {
+            bfs();
+            if (!flag) System.out.println(-1);
         }
-        bfs();
-        System.out.println(result);
 
     }
 
     static void bfs() {
-        Queue<Num> queue = new LinkedList<>();
-        queue.add(new Num(s, ""));
+        Queue<OP> queue = new LinkedList<>();
+        queue.add(new OP("", s));
         set.add((long) s);
         while (!queue.isEmpty()) {
-            Num current = queue.poll();
-            long currentNum = current.num;
-            String currentHistory = current.history;
-            if (currentNum == t) {
-                result = currentHistory;
+            OP op = queue.poll();
+            if (op.num == t) {
+                System.out.println(op.s);
+                flag = true;
                 return;
             }
-            if (currentNum * currentNum <= limit && !set.contains(currentNum * currentNum)) {
-                queue.add(new Num(currentNum * currentNum, currentHistory + "*"));
-                set.add(currentNum * currentNum);
+            if (op.num * op.num < 1000000001 && !set.contains(op.num * op.num)) {
+                set.add(op.num * op.num);
+                queue.add(new OP(op.s + "*", op.num * op.num));
             }
-            if (currentNum + currentNum <= limit && !set.contains(currentNum + currentNum)) {
-                queue.add(new Num(currentNum + currentNum, currentHistory + "+"));
-                set.add(currentNum + currentNum);
+            if (op.num + op.num < 1000000001 && !set.contains(op.num + op.num)) {
+                set.add(op.num + op.num);
+                queue.add(new OP(op.s + "+", op.num + op.num));
             }
             if (!set.contains(0L)) {
-                queue.add(new Num(0, currentHistory + "-"));
                 set.add(0L);
+                queue.add(new OP(op.s + "-", 0));
             }
-            if (currentNum != 0 && !set.contains(1L)) {
-                queue.add(new Num(1, currentHistory + "/"));
+            if (op.num != 0 && !set.contains(1L)) {
                 set.add(1L);
+                queue.add(new OP(op.s + "/", 1));
             }
+
         }
     }
 
-    static class Num {
+    static class OP {
+        String s;
         long num;
-        String history;
 
-        Num(long num, String history) {
+        OP(String s, long num) {
+            this.s = s;
             this.num = num;
-            this.history = history;
         }
     }
-
-
 }
