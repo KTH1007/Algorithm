@@ -6,11 +6,11 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int n, m, t;
-    static int[][] map;
-    static int[] dx = {0, 0, -1, 1};
-    static int[] dy = {1, -1, 0, 0};
+    static int[][] arr;
     static boolean[][][] visited;
     static int min = Integer.MAX_VALUE;
+    static int[] dx = {0, 0, -1, 1};
+    static int[] dy = {1, -1, 0, 0};
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -19,13 +19,13 @@ public class Main {
         m = Integer.parseInt(st.nextToken());
         t = Integer.parseInt(st.nextToken());
 
-        map = new int[n][m];
-        visited = new boolean[n][m][2];
+        arr = new int[n][m];
+        visited = new boolean[n][m][2];  //검을 가졌을 때 왔던 길을 돌아가는 방법이 빠를 수 있음
 
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < m; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
+                arr[i][j] = Integer.parseInt(st.nextToken());
             }
         }
         bfs();
@@ -36,7 +36,7 @@ public class Main {
 
     static void bfs() {
         Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{0, 0, 0, 0});
+        queue.add(new int[]{0, 0, 0, 0});  //x y time gram
         visited[0][0][0] = true;
         while (!queue.isEmpty()) {
             int[] current = queue.poll();
@@ -44,26 +44,25 @@ public class Main {
             int y = current[1];
             int time = current[2];
             int gram = current[3];
-            if (x == n - 1 && y == m - 1) min = Math.min(min, time);
+            if (x == n - 1 && y == m - 1) {
+                min = Math.min(min, time);
+            }
             for (int i = 0; i < 4; i++) {
                 int nx = x + dx[i];
                 int ny = y + dy[i];
-                if (gram == 0) {
-                    if (nx >= 0 && nx < n && ny >= 0 && ny < m && !visited[nx][ny][0] && map[nx][ny] != 1) {
-                        if (map[nx][ny] == 2) {
-                            visited[nx][ny][1] = true;
-                            queue.add(new int[]{nx, ny, time + 1, 1});
-                        }
-                        visited[nx][ny][0] = true;
-                        queue.add(new int[]{nx, ny, time + 1, gram});
-                    }
-                } else {
-                    if (nx >= 0 && nx < n && ny >= 0 && ny < m && !visited[nx][ny][1]) {
+                if (nx >= 0 && nx < n && ny >= 0 && ny < m && gram == 0 && !visited[nx][ny][0] && arr[nx][ny] != 1) {
+                    visited[nx][ny][0] = true;
+                    if (arr[nx][ny] == 2) {
                         visited[nx][ny][1] = true;
-                        queue.add(new int[]{nx, ny, time + 1, gram});
-                    }
+                        queue.add(new int[]{nx, ny, time + 1, 1});
+                    } else queue.add(new int[]{nx, ny, time + 1, gram});
+
+                } else if (nx >= 0 && nx < n && ny >= 0 && ny < m && gram == 1 && !visited[nx][ny][1]) {
+                    visited[nx][ny][1] = true;
+                    queue.add(new int[]{nx, ny, time + 1, gram});
                 }
             }
+
         }
     }
 }
