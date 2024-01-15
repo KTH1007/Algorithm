@@ -9,14 +9,13 @@ public class Main {
         while (true) {
             int n = Integer.parseInt(br.readLine());
             if (n == 0) break;
+
             int max = Integer.MIN_VALUE;
+
             int[] arr = new int[n];
-            int[] dp = new int[n];
             for (int i = 0; i < n; i++) {
                 arr[i] = Integer.parseInt(br.readLine());
-                if (i != 0 && arr[i] + arr[i - 1] > arr[i]) {
-                    arr[i] += arr[i - 1];
-                }
+                if (i > 0 && arr[i] + arr[i - 1] > arr[i]) arr[i] += arr[i - 1];
                 max = Math.max(max, arr[i]);
             }
             sb.append(max).append("\n");
