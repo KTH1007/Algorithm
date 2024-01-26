@@ -20,32 +20,30 @@ public class Main {
         m = Integer.parseInt(st.nextToken());
 
         arr = new int[n][m];
+        visited = new boolean[n][m];
         result = new int[n][m];
+        for (int i = 0; i < n; i++) Arrays.fill(result[i], -1);
 
-        for (int i = 0; i < n; i++) {
-            Arrays.fill(result[i], -1);
-        }
+        int a = 0;
+        int b = 0;
+
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < m; j++) {
                 arr[i][j] = Integer.parseInt(st.nextToken());
+                if (arr[i][j] == 2) {
+                    a = i;
+                    b = j;
+                }
                 if (arr[i][j] == 0) result[i][j] = 0;
             }
         }
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (arr[i][j] == 2) {
-                    result[i][j] = 0;
-                    bfs(i, j); //도착 위치에서 출발
-                }
-            }
-        }
+        bfs(a, b);
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                sb.append(result[i][j]).append(" ");
-            }
+            for (int j = 0; j < m; j++) sb.append(result[i][j]).append(" ");
             sb.append("\n");
         }
 
@@ -54,26 +52,27 @@ public class Main {
     }
 
     static void bfs(int a, int b) {
-        visited = new boolean[n][m];
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[]{a, b, 0});
         visited[a][b] = true;
+
         while (!queue.isEmpty()) {
             int[] current = queue.poll();
             int x = current[0];
             int y = current[1];
             int distance = current[2];
+
+            result[x][y] = distance;
+
             for (int i = 0; i < 4; i++) {
                 int nx = x + dx[i];
                 int ny = y + dy[i];
-                if (nx >= 0 && nx < n && ny >= 0 && ny < m && arr[nx][ny] != 0 && !visited[nx][ny]) {
+                if (nx >= 0 && nx < n && ny >= 0 && ny < m && !visited[nx][ny] && arr[nx][ny] != 0) {
                     visited[nx][ny] = true;
                     queue.add(new int[]{nx, ny, distance + 1});
-                    result[nx][ny] = distance + 1;
                 }
             }
         }
     }
-
 
 }
