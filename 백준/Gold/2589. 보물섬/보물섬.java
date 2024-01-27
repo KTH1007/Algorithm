@@ -5,61 +5,63 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int n, m;
-    static char[][] map;
-    static boolean[][] visited;
-    static int distance = 0;
     static int[] dx = {0, 0, -1, 1};
     static int[] dy = {1, -1, 0, 0};
+    static int n, m;
+    static char[][] arr;
+    static boolean[][] visited;
+    static int max = Integer.MIN_VALUE;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
+
+        arr = new char[n][m];
         visited = new boolean[n][m];
-        map = new char[n][m];
 
         for (int i = 0; i < n; i++) {
             String s = br.readLine();
-            for (int j = 0; j < m; j++) {
-                map[i][j] = s.charAt(j);
-            }
+            for (int j = 0; j < m; j++) arr[i][j] = s.charAt(j);
         }
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (map[i][j] == 'L') {
+                if (arr[i][j] == 'L'){
                     visited = new boolean[n][m];
-                    BFS(i, j);
+                    bfs(i, j);
                 }
             }
         }
 
-        System.out.println(distance);
+        System.out.println(max);
     }
 
-    static void BFS(int a, int b) {
+    static void bfs(int a, int b) {
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[]{a, b, 0});
         visited[a][b] = true;
+
         while (!queue.isEmpty()) {
             int[] current = queue.poll();
             int x = current[0];
             int y = current[1];
-            int count = current[2];
+            int distance = current[2];
+
+            max = Math.max(max, distance);
+
             for (int i = 0; i < 4; i++) {
                 int nx = x + dx[i];
                 int ny = y + dy[i];
-                if (nx >= 0 && nx < n && ny >= 0 && ny < m && map[nx][ny] == 'L' && !visited[nx][ny]) {
+
+                if (nx >= 0 && nx < n && ny >= 0 && ny < m && !visited[nx][ny] && arr[nx][ny] == 'L') {
                     visited[nx][ny] = true;
-                    queue.add(new int[]{nx, ny, count + 1});
-                    distance = Math.max(distance, count + 1);
+                    queue.add(new int[]{nx, ny, distance + 1});
                 }
             }
         }
+
     }
 
 }
-
-
