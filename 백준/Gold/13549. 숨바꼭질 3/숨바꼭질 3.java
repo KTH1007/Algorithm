@@ -6,39 +6,44 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int n, k;
-    static int second = 0;
-    static int[] visited = new int[100001];
+    static int[] dp;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+
         n = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
-        second = BFS();
-        System.out.println(second);
+
+        dp = new int[100001];
+        dp[n] = 1;
+        bfs();
+        System.out.println(dp[k] - 1);
     }
 
-    static int BFS() {
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(n);
-        visited[n] = 1;
+    static void bfs() {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{n, 1});
         while (!queue.isEmpty()) {
-            int current = queue.poll();
-            if (current == k) return visited[current] - 1;
-            if (current * 2 <= 100000 && visited[current * 2] == 0) {
-                visited[current * 2] = visited[current];
-                queue.add(current * 2);
-            }
-            if (current - 1 >= 0 && visited[current - 1] == 0) {
-                visited[current - 1] = visited[current] + 1;
-                queue.add(current - 1);
-            }
-            if (current + 1 <= 100000 && visited[current + 1] == 0) {
-                visited[current + 1] = visited[current] + 1;
-                queue.add(current + 1);
-            }
-        }
-        return -1;
-    }
-}
+            int[] current = queue.poll();
+            int x = current[0];
+            int distance = current[1];
+            if (x == k) return;
 
+            if (x * 2 < 100001 && dp[x * 2] == 0) {
+                queue.add(new int[]{x * 2, distance});
+                dp[x * 2] = distance;
+            }
+            if (x - 1 >= 0 && dp[x - 1] == 0) {
+                queue.add(new int[]{x - 1, distance + 1});
+                dp[x - 1] = distance + 1;
+            }
+            if (x + 1 < 100001 && dp[x + 1] == 0) {
+                queue.add(new int[]{x + 1, distance + 1});
+                dp[x + 1] = distance + 1;
+            }
+
+        }
+    }
+
+}
