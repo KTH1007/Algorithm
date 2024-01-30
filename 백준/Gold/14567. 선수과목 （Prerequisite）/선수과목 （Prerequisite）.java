@@ -10,8 +10,10 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
+
         for (int i = 0; i <= n; i++) list.add(new ArrayList<>());
         arr = new int[n + 1];
 
@@ -24,29 +26,35 @@ public class Main {
         }
 
         topologicalSort();
-        for (int i = 1; i < arr.length; i++) System.out.print(arr[i] + " ");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= n; i++) sb.append(arr[i]).append(" ");
+
+        System.out.println(sb);
+
     }
 
     static void topologicalSort() {
         Queue<Integer> queue = new LinkedList<>();
         for (int i = 1; i <= n; i++) {
-            if (arr[i] == 0) {
+            if (arr[i] == 0) {  //진입 차수가 없는 노드 먼저
                 queue.add(i);
                 arr[i] = 1;
             }
         }
+
         while (!queue.isEmpty()) {
             int current = queue.poll();
             for (int i = 0; i < list.get(current).size(); i++) {
                 int next = list.get(current).get(i);
-                arr[next]--;
+                arr[next]--; //인접한 노드 진입차수 갱신
+
                 if (arr[next] == 0) {
                     arr[next] = arr[current] + 1;
                     queue.add(next);
                 }
             }
         }
+
+
     }
-
-
 }
