@@ -5,38 +5,37 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-    static BigInteger n, m;
-    static int count = 0;
-
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
         StringBuilder sb = new StringBuilder();
-        while (true) {
-            count = 0;
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            n = new BigInteger(st.nextToken());
-            m = new BigInteger(st.nextToken());
-            if (n.equals(BigInteger.ZERO) && m.equals(BigInteger.ZERO)) {
-                break;
-            }
-            BigInteger fib1 = BigInteger.ONE;
-            BigInteger fib2 = BigInteger.TWO;
-            BigInteger fib3 = BigInteger.ZERO;
-            while (fib1.compareTo(m) <= 0) {
-                if (fib1.compareTo(n) >= 0 && fib1.compareTo(m) <= 0) {
-                    count++;
-                }
-                fib3 = fib1.add(fib2);
-                fib1 = fib2;
-                fib2 = fib3;
-            }
-            sb.append(count).append("\n");
 
+        while (true) {
+            st = new StringTokenizer(br.readLine());
+            String s1 = st.nextToken();
+            String s2 = st.nextToken();
+
+            if (s1.equals("0") && s2.equals("0")) break;
+
+            BigInteger a = new BigInteger(s1);
+            BigInteger b = new BigInteger(s2);
+
+            BigInteger f1 = BigInteger.ONE;
+            BigInteger f2 = BigInteger.TWO;
+            BigInteger f3;
+
+            int count = 0;
+            while (f1.compareTo(b) <= 0) {
+                if (f1.compareTo(a) >= 0) count++;
+                f3 = f1.add(f2);
+                f1 = f2;
+                f2 = f3;
+            }
+
+            sb.append(count).append("\n");
 
         }
         System.out.println(sb);
-
     }
-
 
 }
