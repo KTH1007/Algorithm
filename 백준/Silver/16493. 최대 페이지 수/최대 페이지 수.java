@@ -3,41 +3,32 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int n, m;
-    static int max = 0;
-    static int[][] arr;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
 
-        arr = new int[m][2];
+        int[][] arr = new int[m + 1][2];
+        int[][] dp = new int[m + 1][n + 1];
 
-        for (int i = 0; i < m; i++) {
+        for (int i = 1; i <= m; i++) {
             st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            //소요 일
-            arr[i][0] = a;
-            //페이지 수
-            arr[i][1] = b;
+            //소요일
+            arr[i][0] = Integer.parseInt(st.nextToken());
+            //챕터수
+            arr[i][1] = Integer.parseInt(st.nextToken());
         }
 
-        dfs(0, 0, 0);
-        System.out.println(max);
-    }
-
-    static void dfs(int depth, int day, int totalPage) {
-        if (depth == m) {
-            max = Math.max(max, totalPage);
-            return;
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (arr[i][0] > j) dp[i][j] = dp[i - 1][j];
+                else dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - arr[i][0]] + arr[i][1]);
+            }
         }
-        //챕터 포함
-        if (day + arr[depth][0] <= n) dfs(depth + 1, day + arr[depth][0], totalPage + arr[depth][1]);
-        //미포함
-        if (day <= n) dfs(depth + 1, day, totalPage);
+
+        System.out.println(dp[m][n]);
     }
 }
