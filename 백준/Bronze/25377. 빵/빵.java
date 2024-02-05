@@ -19,7 +19,7 @@ public class Main {
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
 
-            if (a < b) min = Math.min(min, a + (b - a));
+            if (a <= b) min = Math.min(min, a + (b - a));
         }
         if (min == Integer.MAX_VALUE) System.out.println(-1);
         else System.out.println(min);
