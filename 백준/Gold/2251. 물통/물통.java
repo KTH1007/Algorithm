@@ -3,42 +3,41 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static int A,B,C;
+    static int A, B, C;
     static boolean[][][] visited;
     static List<Integer> list = new ArrayList<>();
-    public static void main(String[] args) throws Exception{
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        StringBuilder sb = new StringBuilder();
+
         A = Integer.parseInt(st.nextToken());
         B = Integer.parseInt(st.nextToken());
         C = Integer.parseInt(st.nextToken());
-        visited = new boolean[201][201][201];
-        BFS();
+        visited = new boolean[A + 1][B + 1][C + 1];
+
+        bfs();
+
         Collections.sort(list);
-        for(int i=0; i<list.size(); i++){
-            sb.append(list.get(i)).append(" ");
-        }
+        StringBuilder sb = new StringBuilder();
+        for (int i : list) sb.append(i).append(" ");
         System.out.println(sb);
     }
-    static void BFS(){
+
+    static void bfs() {
         Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{0,0,C});
-        while (!queue.isEmpty()){
+        queue.add(new int[]{0, 0, C});
+
+        while (!queue.isEmpty()) {
             int[] current = queue.poll();
             int a = current[0];
             int b = current[1];
             int c = current[2];
 
-            if (visited[a][b][c]) {
-                continue;
-            }
-
+            if (visited[a][b][c]) continue;
             visited[a][b][c] = true;
 
-            if (a == 0) {
-                list.add(c);
-            }
+            if (a == 0) list.add(c);
 
             // 첫 번째 물통에서 두 번째 물통으로 물 붓기
             if (a + b > B) {
@@ -81,8 +80,8 @@ public class Main {
             } else {
                 queue.add(new int[]{a, c + b, 0});
             }
+
         }
     }
 
 }
-
