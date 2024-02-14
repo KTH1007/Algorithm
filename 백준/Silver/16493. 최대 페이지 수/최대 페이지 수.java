@@ -12,7 +12,6 @@ public class Main {
         int m = Integer.parseInt(st.nextToken());
 
         int[][] arr = new int[m + 1][2];
-        int[][] dp = new int[m + 1][n + 1];
 
         for (int i = 1; i <= m; i++) {
             st = new StringTokenizer(br.readLine());
@@ -22,13 +21,18 @@ public class Main {
             arr[i][1] = Integer.parseInt(st.nextToken());
         }
 
+        int[][] dp = new int[m + 1][n + 1];
+
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
-                if (arr[i][0] > j) dp[i][j] = dp[i - 1][j];
+                if (j < arr[i][0]) dp[i][j] = dp[i - 1][j];
                 else dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - arr[i][0]] + arr[i][1]);
             }
         }
 
         System.out.println(dp[m][n]);
+
     }
+
+
 }
