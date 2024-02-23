@@ -5,12 +5,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         Node root = new Node(Integer.parseInt(br.readLine()));
-        String s;
         while (true) {
-            s = br.readLine();
+            String s = br.readLine();
             if (s == null || s.equals("")) break;
-            root.insert(Integer.parseInt(s));
+            root.insertNode(Integer.parseInt(s));
         }
         postOrder(root);
     }
@@ -19,27 +19,26 @@ public class Main {
         if (node == null) return;
         postOrder(node.left);
         postOrder(node.right);
-        System.out.println(node.num);
-
+        System.out.println(node.node);
     }
 
     static class Node {
-        int num;
+        int node;
         Node left, right;
 
-        Node(int num) {
-            this.num = num;
+        Node(int node) {
+            this.node = node;
         }
 
-        void insert(int n) {
-            if (n < this.num) {
-                if (this.left == null) this.left = new Node(n);
-                else this.left.insert(n);
-            } else {
-                if (this.right == null) this.right = new Node(n);
-                else this.right.insert(n);
+        void insertNode(int node) {
+            if (node > this.node) {
+                if (this.right == null) this.right = new Node(node);
+                else this.right.insertNode(node);
+            } else if (node < this.node) {
+                if (this.left == null) this.left = new Node(node);
+                else this.left.insertNode(node);
             }
         }
     }
-    
+
 }
