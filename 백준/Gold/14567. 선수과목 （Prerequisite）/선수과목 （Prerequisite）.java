@@ -6,6 +6,7 @@ public class Main {
     static int n, m;
     static List<List<Integer>> list = new ArrayList<>();
     static int[] arr;
+    static boolean[] visited;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -14,8 +15,9 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
-        for (int i = 0; i <= n; i++) list.add(new ArrayList<>());
         arr = new int[n + 1];
+        visited = new boolean[n + 1];
+        for (int i = 0; i <= n; i++) list.add(new ArrayList<>());
 
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
@@ -24,9 +26,9 @@ public class Main {
             list.get(a).add(b);
             arr[b]++;
         }
-
         topologicalSort();
         StringBuilder sb = new StringBuilder();
+
         for (int i = 1; i <= n; i++) sb.append(arr[i]).append(" ");
 
         System.out.println(sb);
@@ -36,7 +38,7 @@ public class Main {
     static void topologicalSort() {
         Queue<Integer> queue = new LinkedList<>();
         for (int i = 1; i <= n; i++) {
-            if (arr[i] == 0) {  //진입 차수가 없는 노드 먼저
+            if (arr[i] == 0) {
                 queue.add(i);
                 arr[i] = 1;
             }
@@ -46,15 +48,12 @@ public class Main {
             int current = queue.poll();
             for (int i = 0; i < list.get(current).size(); i++) {
                 int next = list.get(current).get(i);
-                arr[next]--; //인접한 노드 진입차수 갱신
-
+                arr[next]--;
                 if (arr[next] == 0) {
-                    arr[next] = arr[current] + 1;
                     queue.add(next);
+                    arr[next] = arr[current] + 1;
                 }
             }
         }
-
-
     }
 }
