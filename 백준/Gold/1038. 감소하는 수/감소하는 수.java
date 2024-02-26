@@ -12,33 +12,23 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
 
-        // 각 자리 마다 선택하거나 선택하지 않거나 하는 경우 2^10 = 1024
-        // 아무것도 선택하지 않는 경우 1을 빼면 1023가지 경우가 존재
-        if (n <= 10) {
-            System.out.println(n);
-            return;
-        } else if (n >= 1023) {
-            System.out.println(-1);
-            return;
+        if (n > 1022) System.out.println(-1);
+        else if (n <= 10) System.out.println(n);
+        else {
+            for (int i = 0; i < 10; i++) {
+                dfs(0, i);
+            }
+            Collections.sort(list);
+            System.out.println(list.get(n));
         }
-
-        for (int i = 0; i < 10; i++) {
-            dfs(i, 0);
-        }
-
-        Collections.sort(list);
-        System.out.println(list.get(n));
 
     }
 
-    static void dfs(long num, int depth) {
+    static void dfs(int depth, long num) {
         if (depth > 10) return;
         list.add(num);
         for (int i = 0; i < num % 10; i++) {
-            dfs((num * 10) + i, depth + 1);
+            dfs(depth + 1, num * 10 + i);
         }
     }
-
 }
-
-
