@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class Main {
-    static int n;
     static List<Long> list = new ArrayList<>();
+    static int n;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,14 +21,14 @@ public class Main {
             Collections.sort(list);
             System.out.println(list.get(n));
         }
-
     }
 
     static void dfs(int depth, long num) {
-        if (depth > 10) return;
+        if (depth > 9) return;
         list.add(num);
         for (int i = 0; i < num % 10; i++) {
             dfs(depth + 1, num * 10 + i);
         }
     }
+
 }
