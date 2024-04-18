@@ -5,7 +5,6 @@ class Solution {
         int answer = 0;
         HashSet<Integer> set = new HashSet<>();
         
-        int t = elements.length;
         int start = 1;
         
         while (start <= elements.length) {
@@ -18,7 +17,6 @@ class Solution {
             }
             start++;
         }
-        
         answer = set.size();
         return answer;
     }
