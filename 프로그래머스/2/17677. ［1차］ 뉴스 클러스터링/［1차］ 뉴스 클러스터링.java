@@ -7,21 +7,11 @@ class Solution {
         List<String> list1 = new ArrayList<>();
         List<String> list2 = new ArrayList<>();
         
-        for (int i = 0; i < str1.length() - 1; i++) {
-            String temp = str1.substring(i, i + 2).toUpperCase();
-            if (temp.charAt(0) >= 'A' && temp.charAt(0) <= 'Z'
-               && temp.charAt(1) >= 'A' && temp.charAt(1) <= 'Z') {
-                list1.add(str1.substring(i, i + 2).toUpperCase());
-            }
-        }
+        str1 = str1.toUpperCase();
+        str2 = str2.toUpperCase();
         
-        for (int i = 0; i < str2.length() - 1; i++) {
-            String temp = str2.substring(i, i + 2).toUpperCase();
-            if (temp.charAt(0) >= 'A' && temp.charAt(0) <= 'Z'
-               && temp.charAt(1) >= 'A' && temp.charAt(1) <= 'Z') {
-                list2.add(str2.substring(i, i + 2).toUpperCase());
-            }
-        }
+        listAdd(str1, list1);
+        listAdd(str2, list2);
         
         List<String> intersection = new ArrayList<>();
         List<String> union = new ArrayList<>();
@@ -37,14 +27,20 @@ class Solution {
             union.add(s);
         }
         
-        double intersectionSize = (double) intersection.size();
-        double unionSize = (double) union.size();
-        
-        
-        if (intersectionSize == 0 && unionSize == 0) return 65536;
-        
-        answer = (int) ((intersectionSize / unionSize) * 65536);
+        if (intersection.size() == 0 && union.size() == 0) return 65536;
+        answer = (int) ((double) intersection.size() / (double) union.size() * 65536);
 
         return answer;
+    }
+    
+    public void listAdd(String str, List<String> list) {
+        String s;
+        for (int i = 0; i < str.length() - 1; i++) {
+            s = str.substring(i, i + 2);
+            if ((s.charAt(0) >= 'A' && s.charAt(0) <= 'Z') &&
+               (s.charAt(1) >= 'A' && s.charAt(1) <= 'Z')) {
+                list.add(s);
+            }
+        }
     }
 }
