@@ -1,10 +1,10 @@
 # [level 2] 주차 요금 계산 - 92341 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/92341) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/92341#) 
 
 ### 성능 요약
 
-메모리: 76 MB, 시간: 0.29 ms
+메모리: 67.4 MB, 시간: 0.39 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 04월 02일 15:28:14
+2024년 05월 08일 09:59:42
 
 ### 문제 설명
 
