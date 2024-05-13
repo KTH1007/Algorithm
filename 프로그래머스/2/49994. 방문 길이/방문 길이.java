@@ -1,33 +1,32 @@
+import java.util.*;
+
 class Solution {
     public int solution(String dirs) {
         int answer = 0;
         int x = 5;
         int y = 5;
         
-        boolean[][][][] visited = new boolean[11][11][11][11];
+        boolean[][][][] visited= new boolean[11][11][11][11];
         
         int[] dx = {0, 0, -1, 1};
         int[] dy = {1, -1, 0, 0};
-        int idx;
+        int index = 0;
         
         for (int i = 0; i < dirs.length(); i++) {
             char c = dirs.charAt(i);
             
-            if(c == 'U'){
-                idx = 0;
-            }
-            else if(c == 'D') {
-                idx = 1;
-            }
-            else if(c == 'L') {
-                idx = 2;
-            }
-            else {
-                idx = 3;
+            if (c == 'U') {
+                index = 0;
+            } else if (c == 'D') {
+                index = 1;
+            } else if (c == 'L') {
+                index = 2;
+            } else {
+                index = 3;
             }
             
-            int nx = x + dx[idx];
-            int ny = y + dy[idx];
+            int nx = x + dx[index];
+            int ny = y + dy[index];
             
             if (nx >= 0 && nx < 11 && ny >= 0 && ny < 11) {
                 if (!visited[nx][ny][x][y] && !visited[x][y][nx][ny]) {
