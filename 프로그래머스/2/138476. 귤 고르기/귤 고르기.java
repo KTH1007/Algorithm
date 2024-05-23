@@ -3,32 +3,25 @@ import java.util.*;
 class Solution {
     public int solution(int k, int[] tangerine) {
         int answer = 0;
+        
         HashMap<Integer, Integer> map = new HashMap<>();
         
         for (int i = 0; i < tangerine.length; i++) {
             map.put(tangerine[i], map.getOrDefault(tangerine[i], 0) + 1);
         }
         
-        List<Integer> list = new ArrayList<>(map.keySet());
-        Collections.sort(list, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return map.get(o2) - map.get(o1);
-            }
-        });
+        List<Integer> list = new ArrayList<>();
         
-        for (int i = 0; i < list.size(); i++) {
-            if (k <= 0) break;
-            k -= map.get(list.get(i));
+        for (int key : map.keySet()) {
+            list.add(map.get(key));
+        }
+        Collections.sort(list, Collections.reverseOrder());
+        
+        while (k > 0) {
+            k -= list.get(answer);
             answer++;
         }
         
         return answer;
     }
 }
-
-/*
-hashmap에 저장 후 같은 귤 크기 카운트 증가
-
-
-*/
