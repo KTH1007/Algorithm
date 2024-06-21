@@ -1,45 +1,42 @@
 import java.util.*;
-
 class Solution {
     public int solution(String str1, String str2) {
         int answer = 0;
-        
-        List<String> list1 = new ArrayList<>();
-        List<String> list2 = new ArrayList<>();
-        
         str1 = str1.toUpperCase();
         str2 = str2.toUpperCase();
         
-        listAdd(str1, list1);
-        listAdd(str2, list2);
+        List<String> str1List = new ArrayList<>();
+        List<String> str2List = new ArrayList<>();
+        sub(str1, str1List);
+        sub(str2, str2List);
         
-        List<String> intersection = new ArrayList<>();
         List<String> union = new ArrayList<>();
+        List<String> intersection = new ArrayList<>();
         
-        for (String s : list1) {
-            if (list2.remove(s)) {
+        for (String s : str1List) {
+            union.add(s);
+        }
+                
+        for (String s : str2List) {
+            if (str1List.remove(s)) {
                 intersection.add(s);
+            } else {
+                union.add(s);
             }
-            union.add(s);
         }
         
-        for (String s : list2) {
-            union.add(s);
-        }
+        if (union.size() == 0 && intersection.size() == 0) return 65536;
+        answer = (int) (((double) intersection.size() / (double) union.size()) * 65536);
         
-        if (intersection.size() == 0 && union.size() == 0) return 65536;
-        answer = (int) ((double) intersection.size() / (double) union.size() * 65536);
-
+        
         return answer;
     }
-    
-    public void listAdd(String str, List<String> list) {
-        String s;
+    static void sub(String str, List<String> list) {
         for (int i = 0; i < str.length() - 1; i++) {
-            s = str.substring(i, i + 2);
-            if ((s.charAt(0) >= 'A' && s.charAt(0) <= 'Z') &&
-               (s.charAt(1) >= 'A' && s.charAt(1) <= 'Z')) {
-                list.add(s);
+            char c1 = str.charAt(i);
+            char c2 = str.charAt(i + 1);
+            if (c1 >= 'A' && c1 <= 'Z' && c2 >= 'A' && c2 <= 'Z') {
+                list.add(str.substring(i, i + 2));
             }
         }
     }
