@@ -6,11 +6,9 @@ class Solution {
         HashSet<Integer> set = new HashSet<>();
         
         for (int i = 0; i < elements.length; i++) {
+            int sum = 0;
             for (int j = 0; j < elements.length; j++) {
-                int sum = 0;
-                for (int k = j; k < i + j; k++) {
-                    sum += elements[k % elements.length];
-                }
+                sum += elements[(i + j) % elements.length];
                 set.add(sum);
             }
         }
