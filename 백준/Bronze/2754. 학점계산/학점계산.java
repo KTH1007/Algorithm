@@ -1,10 +1,11 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         HashMap<String, String> map = new HashMap<>();
         map.put("A+", "4.3");
@@ -22,6 +23,4 @@ public class Main {
         map.put("F", "0.0");
         System.out.println(map.get(br.readLine()));
     }
-
-
 }
