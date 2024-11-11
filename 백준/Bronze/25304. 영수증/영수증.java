@@ -1,24 +1,27 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int sum = 0;
-        int x = Integer.parseInt(br.readLine());
+        int X = Integer.parseInt(br.readLine());
+
         int n = Integer.parseInt(br.readLine());
-        for (int i = 0; i < n; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            sum += a * b;
+
+        StringTokenizer st;
+        int sum = 0;
+        while (n-- > 0) {
+            st = new StringTokenizer(br.readLine());
+            sum += Integer.parseInt(st.nextToken()) * Integer.parseInt(st.nextToken());
         }
-        if (x == sum) System.out.println("Yes");
-        else System.out.println("No");
+
+        if (sum == X) {
+            System.out.println("Yes");
+        } else {
+            System.out.println("No");
+        }
     }
-
-
 }
-
