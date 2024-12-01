@@ -1,46 +1,58 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		int n = Integer.parseInt(br.readLine());
-		int[][] arr = new int[n][2];
-		for(int i=0; i<n; i++) {
-			String s = br.readLine();
-			StringTokenizer st = new StringTokenizer(s);
-			int a = Integer.parseInt(st.nextToken());
-			int b = Integer.parseInt(st.nextToken());
-			int j=0;
-			arr[i][j] = a;
-			arr[i][j+1] = b;
-		}
-		Arrays.sort(arr, (o1,o2) -> {
-			if(o1[0] == o2[0]) {
-				return Integer.compare(o1[1],o2[1]);
-			}
-			else {
-				return Integer.compare(o1[0], o2[0]);
-			}
-		});
-		
-		for(int i=0; i<n; i++) {
-			for(int j=0; j<2; j++) {
-				bw.write(Integer.toString(arr[i][j]));
-				bw.write(" ");
-			}
-			bw.write("\n");
-		}
-		
-		bw.flush();
-		bw.close();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
 
-	}
+        StringTokenizer st;
+
+        List<Coordinate> list = new ArrayList<>();
+
+        while (n-- > 0) {
+            st = new StringTokenizer(br.readLine());
+            list.add(new Coordinate(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
+        }
+
+        list.sort(null);
+
+        StringBuilder sb = new StringBuilder();
+        for (Coordinate coordinate : list) {
+            sb.append(coordinate.getX()).append(" ").append(coordinate.getY()).append("\n");
+        }
+
+        System.out.println(sb);
+    }
+
+    private static class Coordinate implements Comparable<Coordinate>{
+        private int x;
+        private int y;
+
+        public Coordinate(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        @Override
+        public int compareTo(Coordinate o) {
+            if (this.x == o.x) {
+                return this.y - o.y;
+            }
+            return this.x - o.x;
+        }
+    }
 }
