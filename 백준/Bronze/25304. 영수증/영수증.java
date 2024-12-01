@@ -7,18 +7,18 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int X = Integer.parseInt(br.readLine());
+        int x = Integer.parseInt(br.readLine());
 
         int n = Integer.parseInt(br.readLine());
 
         StringTokenizer st;
         int sum = 0;
-        while (n-- > 0) {
+        for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
             sum += Integer.parseInt(st.nextToken()) * Integer.parseInt(st.nextToken());
         }
 
-        if (sum == X) {
+        if (sum == x) {
             System.out.println("Yes");
         } else {
             System.out.println("No");
