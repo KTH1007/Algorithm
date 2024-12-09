@@ -2,37 +2,38 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
-		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-		int n = Integer.parseInt(st.nextToken());
-		HashMap<String,Integer> map = new HashMap<>();
-		st = new StringTokenizer(br.readLine(), " ");
-		for(int i=0; i<n; i++) {
-			String k = st.nextToken();
-			if(map.containsKey(k)) {
-				map.replace(k, map.get(k)+1);
-			}
-			else {
-				map.put(k, 1);
-			}
-		}
-		int m = Integer.parseInt(br.readLine());
-		st = new StringTokenizer(br.readLine(), " ");
-		for(int i=0; i<m; i++) {
-			String k = st.nextToken();
-			if(map.containsKey(k)) {
-				sb.append(Integer.toString(map.get(k))).append(" ");
-			}
-			else {
-				sb.append("0 ");
-			}
-		}
-		System.out.println(sb);
-	}
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int n = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        while (n-- > 0) {
+            int num = Integer.parseInt(st.nextToken());
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        int m = Integer.parseInt(br.readLine());
+
+        StringBuilder sb = new StringBuilder();
+        st = new StringTokenizer(br.readLine());
+        while (m-- > 0) {
+            int num = Integer.parseInt(st.nextToken());
+
+            if (map.containsKey(num)) {
+                sb.append(map.get(num)).append(" ");
+            } else {
+                sb.append(0).append(" ");
+            }
+        }
+
+        System.out.println(sb);
+    }
 }
