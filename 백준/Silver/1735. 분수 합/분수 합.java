@@ -1,10 +1,11 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
@@ -15,21 +16,17 @@ public class Main {
         int a2 = Integer.parseInt(st.nextToken());
         int b2 = Integer.parseInt(st.nextToken());
 
-        int numerator = (a1 * b2) + (a2 * b1);
+
+        int molecule = a1 * b2 + a2 * b1;
         int denominator = b1 * b2;
 
-        int divide = gcd(numerator, denominator);
+        int gcd = gcd(molecule, denominator);
 
-        System.out.println(numerator / divide + " " + denominator / divide);
-
+        System.out.println(molecule / gcd + " " + denominator / gcd);
     }
 
-    static int gcd(int a, int b) {
+    private static int gcd(int a, int b) {
         if (b == 0) return a;
         return gcd(b, a % b);
     }
-
-
 }
-
-
