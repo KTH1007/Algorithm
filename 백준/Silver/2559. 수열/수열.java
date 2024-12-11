@@ -18,13 +18,15 @@ public class Main {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        int max = Integer.MIN_VALUE;
+        int sum = 0;
 
-        for (int i = 0; i <= n - k; i++) {
-            int sum = 0;
-            for (int j = i; j < i + k; j++) {
-                sum += arr[j];
-            }
+        for (int i = 0; i < k; i++) {
+            sum += arr[i];
+        }
+        int max = sum;
+
+        for (int i = k; i < n; i++) {
+            sum += arr[i] - arr[i - k];
             max = Math.max(max, sum);
         }
 
