@@ -19,7 +19,7 @@ public class Main {
         while (left <= right) {
             int mid = (left + right) / 2;
 
-            if (getPercent(x + mid, y + mid) != z) {
+            if (getPercent(x + mid, y + mid) > z) {
                 ans = mid;
                 right = mid - 1;
             } else {
