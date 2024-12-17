@@ -1,47 +1,42 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-    static boolean flag = false;
-    static long n = 0;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int n = Integer.parseInt(br.readLine());
         StringBuilder sb = new StringBuilder();
 
-        int t = Integer.parseInt(br.readLine());
+        for (int i = 0; i < n; i++) {
+            String s = br.readLine();
+            if (s == null || s.equals("")) break;
+            long num = Long.parseLong(s);
 
-        while (t-- > 0) {
-            n = Long.parseLong(br.readLine());
-            if (n <= 2) sb.append(2).append("\n");
-            else {
-                while (true) {
-                    flag = false;
-                    long temp = Prime(n);
-                    if (flag && temp >= n) {
-                        sb.append(temp).append("\n");
-                        break;
-                    }
-                    n++;
+            if (num < 2) {
+                sb.append(2).append("\n");
+                continue;
+            }
+
+            while (true) {
+                if (isPrime(num)) {
+                    sb.append(num).append("\n");
+                    break;
                 }
+                num++;
             }
         }
 
         System.out.println(sb);
     }
 
-    static long Prime(long a) {
-        for (long i = 2; i <= Math.sqrt(a); i++) {
-            if (a % i == 0) {
-                flag = false;
-                return -1;
-            }
+    private static boolean isPrime(long num) {
+        if (num < 2) return false;
+        for (int i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i == 0) return false;
         }
-        flag = true;
-        return a;
+        return true;
     }
-
-
 }
-
-
