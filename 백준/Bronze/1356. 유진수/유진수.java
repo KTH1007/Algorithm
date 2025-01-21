@@ -1,11 +1,11 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         String s = br.readLine();
 
         if (s.length() == 1) {
@@ -13,31 +13,29 @@ public class Main {
             return;
         }
 
-        boolean flag = false;
+        for (int i = 0; i < s.length(); i++) {
+            String a = s.substring(0, i);
+            String b = s.substring(i);
 
-        for (int i = 1; i < s.length(); i++) {
-            String temp1 = s.substring(0, i);
-            String temp2 = s.substring(i);
+            int aMul = 1;
+            int bMul = 1;
 
-            int result1 = 1;
-            int result2 = 1;
-
-            for (int j = 0; j < temp1.length(); j++) {
-                result1 *= temp1.charAt(j) - '0';
+            for (int j = 0; j < a.length(); j++) {
+                aMul *= (a.charAt(j) - '0');
             }
 
-            for (int j = 0; j < temp2.length(); j++) {
-                result2 *= temp2.charAt(j) - '0';
+            for (int j = 0; j < b.length(); j++) {
+                bMul *= (b.charAt(j) - '0');
             }
 
-            if (result1 == result2) {
-                flag = true;
+            if (aMul == bMul) {
+                System.out.println("YES");
+                return;
             }
         }
 
-        if (flag) System.out.println("YES");
-        else System.out.println("NO");
+        System.out.println("NO");
+
 
     }
-
 }
