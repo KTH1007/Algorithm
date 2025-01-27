@@ -1,25 +1,30 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashSet;
+import java.util.Set;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        HashSet<String> set = new HashSet<>();
-        int count = 0;
+
         int n = Integer.parseInt(br.readLine());
+
+        Set<String> set = new HashSet<>();
+        int count = 0;
         while (n-- > 0) {
             String s = br.readLine();
+
             if (s.equals("ENTER")) {
                 count += set.size();
                 set = new HashSet<>();
-            } else {
-                set.add(s);
+                continue;
             }
+
+            set.add(s);
         }
 
-        count += set.size();
-        System.out.println(count);
+        System.out.println(count + set.size());
     }
 }
