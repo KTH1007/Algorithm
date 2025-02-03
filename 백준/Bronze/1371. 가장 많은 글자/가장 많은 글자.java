@@ -1,36 +1,31 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
 
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int[] alpha = new int[26];
+        int[] alphabet = new int[26];
         int max = 0;
-        String input;
-        String str = "";
+        String s;
+        while ((s = br.readLine()) != null) {
+            for (int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
+                if (c == ' ') continue;
+                alphabet[c - 'a']++;
+                max = Math.max(max, alphabet[c - 'a']);
+            }
+        }
 
         StringBuilder sb = new StringBuilder();
-        while ((input = br.readLine()) != null) {
-            sb.append(input);
-        }
-
-        str = sb.toString();
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) != ' ') {
-                alpha[str.charAt(i) - 'a']++;
-
-                if (alpha[str.charAt(i) - 'a'] > max) {
-                    max = alpha[str.charAt(i) - 'a'];
-                }
-            }
-        }
-
         for (int i = 0; i < 26; i++) {
-            if (max == alpha[i]) {
-                System.out.print((char) (i + 'a'));
+            if (alphabet[i] == max) {
+                sb.append((char) (i + 97));
             }
         }
+
+        System.out.println(sb);
     }
 }
