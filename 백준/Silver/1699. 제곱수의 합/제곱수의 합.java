@@ -14,13 +14,9 @@ public class Main {
         dp[4] = 1;
 
         for (int i = 5; i <= n; i++) {
-            if (i == Math.pow((int) Math.sqrt(i), 2)) {
-                dp[i] = 1;
-            } else {
-                dp[i] = dp[i - 1] + 1;
-                for (int j = 1; j <= i / 2; j++) {
-                    dp[i] = Math.min(dp[i], dp[i - j] + dp[j]);
-                }
+            dp[i] = i;
+            for (int j = 1; j * j <= i; j++) {
+                dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
             }
         }
 
