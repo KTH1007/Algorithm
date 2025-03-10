@@ -1,35 +1,46 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int m = Integer.parseInt(br.readLine());
-        int n = Integer.parseInt(br.readLine());
-        int sum = 0;
-        int min = Integer.MAX_VALUE;
 
-        for (int i = m; i <= n; i++) {
-            int a = isPrime(i);
-            if (a != -1) {
-                sum += a;
-                min = Math.min(min, a);
+        int n = Integer.parseInt(br.readLine());
+        int m = Integer.parseInt(br.readLine());
+
+        boolean[] prime = new boolean[m + 1];
+        Arrays.fill(prime, true);
+        prime[0] = prime[1] = false;
+
+        isPrime(prime, m);
+
+        int min = -1;
+        int sum = 0;
+
+        for (int i = n; i <= m; i++) {
+            if (prime[i]) {
+                sum += i;
+                if (min == -1) min = i;
             }
         }
 
-        if (min == Integer.MAX_VALUE) System.out.println(-1);
+        if (min == -1) System.out.println(-1);
         else {
             System.out.println(sum);
             System.out.println(min);
         }
     }
 
-    static int isPrime(int n) {
-        if (n == 1) return -1;
-        for (int i = 2; i <= Math.sqrt(n); i++) {
-            if (n % i == 0) return -1;
+    private static void isPrime(boolean[] prime, int m) {
+        for (int i = 2; i <= Math.sqrt(m); i++) {
+            if (prime[i]) {
+                for (int j = i * i; j <= m; j += i) {
+                    prime[j] = false;
+                }
+            }
         }
-        return n;
     }
 }
