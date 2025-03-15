@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -6,49 +7,49 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        int n = Integer.parseInt(br.readLine());
 
         Deque<int[]> deque = new ArrayDeque<>();
-
+        int n = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        for (int i = 1; i <= n; i++) deque.add(new int[]{Integer.parseInt(st.nextToken()), i});
+        for (int i = 1; i <= n; i++) {
+            deque.add(new int[]{Integer.parseInt(st.nextToken()), i});
+        }
 
-        int[] current = deque.poll();
-        int x = current[0];  // 풍선 안에 값
-        int index = current[1];  // 인덱스 값
-
+        int num = deque.peekFirst()[0];
+        int index = deque.peekFirst()[1];
         sb.append(index).append(" ");
 
-        while (!deque.isEmpty()) {
-            if (x < 0) {
-                for (int i = 1; i < Math.abs(x); i++) {
-                    int[] temp = deque.pollLast();
-                    deque.addFirst(temp);
-                }
-                current = deque.pollLast();
+        deque.poll();
 
-            } else {
-                for (int i = 1; i < x; i++) {
-                    int[] temp = deque.poll();
-                    deque.add(temp);
+        while (!deque.isEmpty()) {
+            if (num > 0) {
+                for (int i = 0; i < num - 1; i++) {
+                    deque.add(deque.poll());
                 }
-                current = deque.poll();
+                num = deque.peekFirst()[0];
+                index = deque.peekFirst()[1];
+
+                deque.poll();
+            } else {
+                num *= -1;
+                for (int i = 0; i < num - 1; i++) {
+                    deque.addFirst(deque.pollLast());
+                }
+                num = deque.peekLast()[0];
+                index = deque.peekLast()[1];
+
+                deque.pollLast();
             }
 
-            x = current[0];
-            index = current[1];
             sb.append(index).append(" ");
-
         }
 
         System.out.println(sb);
+
+
     }
-
-
 }
-
-
