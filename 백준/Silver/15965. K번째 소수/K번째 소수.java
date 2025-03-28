@@ -1,33 +1,30 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Main {
 
-    static final int N = 500000;
+    static final int N = 90000000;
     public static void main(String[] args) throws NumberFormatException, IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int n = Integer.parseInt(br.readLine());
         boolean[] prime = new boolean[N + 1];
 
-
         Arrays.fill(prime, true);
         prime[0] = prime[1] = false;
-        
         isPrime(prime);
 
-        List<Integer> list = new ArrayList<>();
+        int[] arr = new int[N + 1];
+        int idx = 0;
         for (int i = 0; i <= N; i++) {
             if (prime[i]) {
-                list.add(i);
+                arr[idx++] = i;
             }
         }
 
-        System.out.println(list.get(n - 1));
+        System.out.println(arr[n - 1]);
     }
 
     private static void isPrime(boolean[] prime) {
