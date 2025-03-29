@@ -1,38 +1,41 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         int n = Integer.parseInt(br.readLine());
 
-        String[] num = new String[n];
-
+        String[] studentNumbers = new String[n];
         for (int i = 0; i < n; i++) {
-            num[i] = br.readLine();
+            studentNumbers[i] = br.readLine();
         }
 
-        int count = 1;
-        List<String> list = new ArrayList<>();
-        int len = num[0].length();
+        int k = 1;
 
-        while (list.size() != n) {
-            for (String s : num) {
-                String sub = s.substring(len - count, len);
-                if (list.contains(sub)) {
-                    list = new ArrayList<>();
-                    count++;
+        while (true) {
+            boolean isCompare = false;
+
+            Set<String> set = new HashSet<>();
+            for (int i = 0; i < n; i++) {
+                String subNumber = studentNumbers[i].substring(studentNumbers[0].length() - k);
+                if (set.contains(subNumber)) {
+                    isCompare = true;
+                    k++;
                     break;
                 } else {
-                    list.add(sub);
+                    set.add(subNumber);
                 }
             }
-        }
-        System.out.println(count);
-    }
 
+            if (!isCompare) break;
+        }
+
+        System.out.println(k);
+    }
 }
