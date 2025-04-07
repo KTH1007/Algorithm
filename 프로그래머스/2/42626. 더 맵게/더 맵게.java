@@ -2,20 +2,31 @@ import java.util.*;
 class Solution {
     public int solution(int[] scoville, int K) {
         int answer = 0;
-        PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> {return o1 - o2;});
         
-        for (int i = 0; i < scoville.length; i++) {
-            pq.add(scoville[i]);
+        // 최소힙 사용
+        Queue<Integer> queue = new PriorityQueue<>();
+        
+        for (int i : scoville) {
+            queue.add(i);
         }
         
-        while (pq.size() > 1) {
-            if (pq.peek() >= K) break;
-            else {
-                pq.add(pq.poll() + (pq.poll() * 2));
-                answer++;
+        
+        // 만약 k를 넘지 못했을 경우 flag는 false로 설정
+        boolean flag = false;
+        while (queue.size() > 1) {
+            if (queue.peek() >= K) {
+                flag = true;
+                break;
             }
+            
+            queue.add(queue.poll() + queue.poll() * 2);
+            answer++;
         }
-        if (pq.peek() < K) answer = -1;
+        
+        // queue size가 1이지만 값이 K를 넘긴 경우
+        if (queue.peek() >= K) return answer;
+        
+        if (!flag) answer = -1;
         return answer;
     }
 }
