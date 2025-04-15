@@ -1,17 +1,19 @@
 class Solution {
     public int solution(int[] arr) {
-        int answer = 0;
         if (arr.length == 1) return arr[0];
-        answer = arr[0] * arr[1] / gcd(arr[0], arr[1]);
+        
+        int gcd = getGcd(arr[0], arr[1]);
+        int answer = arr[0] * arr[1] / gcd;
         
         for (int i = 1; i < arr.length; i++) {
-            answer = answer * arr[i] / gcd(answer, arr[i]);
+            answer = answer * arr[i] / getGcd(answer, arr[i]);
         }
+        
         return answer;
     }
     
-    static int gcd(int a ,int b) {
+    public int getGcd(int a, int b) {
         if (b == 0) return a;
-        return gcd(b, a % b);
+        return getGcd(b, a % b);
     }
 }
