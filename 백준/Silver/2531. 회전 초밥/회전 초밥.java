@@ -20,17 +20,25 @@ public class Main {
 
         // c가 포함되어 있지 않고 k개 연속으로 먹는 경우가 최대
         
-        Set<Integer> answer = new HashSet<>();
+        Map<Integer, Integer> answer = new HashMap<>();
         int max = 0;
 
-        for (int i = 0; i < n; i++) {
-            answer = new HashSet<>();
-            answer.add(c);
-            for (int j = 0; j < k; j++) {
-                int num = i + j;
-                if (num >= n) num %= n;
-                answer.add(list.get(num));
-            }
+        int left = 0;
+        int right = k - 1;
+
+        for (int i = 0; i < k; i++) {
+            answer.put(list.get(i), answer.getOrDefault(list.get(i), 0) + 1);
+        }
+        answer.put(c, answer.getOrDefault(c, 0) + 1);
+
+        while (left < n) {
+            answer.put(list.get(left), answer.get(list.get(left)) - 1);
+            if (answer.get(list.get(left)) == 0) answer.remove(list.get(left));
+            left++;
+            right++;
+            if (right >= n) right %= n;
+            answer.put(list.get(right), answer.getOrDefault(list.get(right), 0) + 1);
+
             max = Math.max(max, answer.size());
             if (max == k + 1) break;
         }
