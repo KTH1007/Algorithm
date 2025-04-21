@@ -32,6 +32,7 @@ public class Main {
                 answer.add(list.get(num));
             }
             max = Math.max(max, answer.size());
+            if (max == k + 1) break;
         }
 
         System.out.println(max);
