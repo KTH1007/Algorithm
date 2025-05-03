@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static Set<Integer> set = new HashSet<>();
+    static int[] answer;
     static int[] s;
     static int n;
 
@@ -14,44 +14,31 @@ public class Main {
         s = new int[n];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
+        int max = 0;
+
         for (int i = 0; i < n; i++) {
             s[i] = Integer.parseInt(st.nextToken());
+            max += s[i];
         }
 
-        dfs(0, new ArrayList<>());
-        int min = Integer.MAX_VALUE;
+        answer = new int[max + 2];
 
-        List<Integer> answer = new ArrayList<>(set);
-        answer.sort(null);
-
-        for (int i = 0; i < answer.size() - 1; i++) {
-            if (answer.get(i) + 1 < answer.get(i + 1)) {
-                min = answer.get(i) + 1;
+        dfs(0, 0);
+        for (int i = 1; i < answer.length; i++) {
+            if (answer[i] == 0) {
+                System.out.println(i);
                 break;
             }
         }
-
-        if (min == Integer.MAX_VALUE) {
-            min = answer.get(answer.size() - 1) + 1;
-        }
-
-        System.out.println(min);
     }
 
-    private static void dfs(int depth, List<Integer> selected) {
+    private static void dfs(int depth, int sum) {
         if (depth == n) {
-            int sum = 0;
-            for (Integer i : selected) {
-                sum += i;
-            }
-            set.add(sum);
+            answer[sum] = 1;
             return;
         }
 
-        selected.add(s[depth]);
-        dfs(depth + 1, selected);
-
-        selected.remove(selected.size() - 1);
-        dfs(depth + 1, selected);
+        dfs(depth + 1, sum + s[depth]);
+        dfs(depth + 1, sum);
     }
 }
