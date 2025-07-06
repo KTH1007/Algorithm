@@ -10,14 +10,15 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int t = Integer.parseInt(br.readLine());
         StringBuilder sb = new StringBuilder();
+
         while (t-- > 0) {
             int n = Integer.parseInt(br.readLine());
 
+            store = new ArrayList<>();
             StringTokenizer st = new StringTokenizer(br.readLine());
             startX = Integer.parseInt(st.nextToken());
             startY = Integer.parseInt(st.nextToken());
 
-            store = new ArrayList<>();
             for (int i = 0; i < n; i++) {
                 st = new StringTokenizer(br.readLine());
                 int a = Integer.parseInt(st.nextToken());
