@@ -26,7 +26,7 @@ public class Main {
     }
 
     private static void dfs(int depth, int sum, int pos) {
-        if (depth == m) {
+        if (depth == m || pos >= n) {
             max = Math.max(max, sum);
             return;
         }
@@ -36,10 +36,9 @@ public class Main {
         } else {
             dfs(depth + 1, sum, pos + 1);
         }
+
         if (pos + 2 < n) {
             dfs(depth + 1, sum / 2 + arr[pos + 2], pos + 2);
-        } else {
-            dfs(depth + 1, sum, pos + 2);
         }
     }
 }
