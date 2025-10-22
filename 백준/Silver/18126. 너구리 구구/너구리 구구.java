@@ -60,17 +60,20 @@ public class Main {
             long distance = node.distance;
 
             maxDistance = Math.max(maxDistance, distance);
-
-            for (Edge edge : edges[destination]) {
-                if (visited[edge.destination]) {
-                    continue;
-                }
-                visited[edge.destination] = true;
-                queue.add(new Edge(edge.destination, distance + edge.distance));
-            }
+            Search(destination, visited, queue, distance);
         }
 
         return maxDistance;
+    }
+
+    private static void Search(int destination, boolean[] visited, Queue<Edge> queue, long distance) {
+        for (Edge edge : edges[destination]) {
+            if (visited[edge.destination]) {
+                continue;
+            }
+            visited[edge.destination] = true;
+            queue.add(new Edge(edge.destination, distance + edge.distance));
+        }
     }
 
 }
