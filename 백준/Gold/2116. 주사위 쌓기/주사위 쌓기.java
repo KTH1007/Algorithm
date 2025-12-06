@@ -5,205 +5,102 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Dice {
-    private int one;
-    private int two;
-    private int three;
-    private int four;
-    private int five;
-    private int six;
+    private static final int[] OPPOSITE = {5, 3, 4, 1, 2, 0};
+    private static final int DICE_FACES = 6;
 
-    public Dice(int one, int two, int three, int four, int five, int six) {
-        this.one = one;
-        this.two = two;
-        this.three = three;
-        this.four = four;
-        this.five = five;
-        this.six = six;
+    private final int[] faces;
+
+    public Dice(int[] faces) {
+        if (faces.length != DICE_FACES) {
+            throw new IllegalArgumentException("주사위는 6개의 면이 필요합니다.");
+        }
+        this.faces = faces.clone();
     }
 
-    public int getOne() {
-        return one;
+    public int getTopValue(int bottomValue) {
+        for (int i = 0; i < DICE_FACES; i++) {
+            if (faces[i] == bottomValue) {
+                return faces[OPPOSITE[i]];
+            }
+        }
+        throw new IllegalArgumentException("존재하지 않는 바닥면 값: " + bottomValue);
     }
 
-    public int getTwo() {
-        return two;
+    public int getMaxSideValue(int bottomValue, int topValue) {
+        int maxValue = 0;
+        for (int face : faces) {
+            if (face != bottomValue && face != topValue) {
+                maxValue = Math.max(maxValue, face);
+            }
+        }
+        return maxValue;
     }
 
-    public int getThree() {
-        return three;
+    public List<Integer> getAllPossibleBottoms() {
+        List<Integer> bottoms = new ArrayList<>();
+        for (int face : faces) {
+            bottoms.add(face);
+        }
+        return bottoms;
+    }
+}
+
+class DiceStack {
+    private final List<Dice> dices;
+
+    public DiceStack(List<Dice> dices) {
+        this.dices = new ArrayList<>(dices);
     }
 
-    public int getFour() {
-        return four;
+    public int calculateMaxSideSum() {
+        if (dices.isEmpty()) {
+            return 0;
+        }
+
+        int maxSum = 0;
+
+        Dice firstDice = dices.get(0);
+        for (Integer bottomValue : firstDice.getAllPossibleBottoms()) {
+            int sum = calculateSumWithBottom(0, bottomValue);
+            maxSum = Math.max(maxSum, sum);
+        }
+
+        return maxSum;
     }
 
-    public int getFive() {
-        return five;
-    }
+    private int calculateSumWithBottom(int index, int bottomValue) {
+        if (index >= dices.size()) {
+            return 0;
+        }
 
-    public int getSix() {
-        return six;
+        Dice currentDice = dices.get(index);
+        int topValue = currentDice.getTopValue(bottomValue);
+        int sideMax = currentDice.getMaxSideValue(bottomValue, topValue);
+
+        if (index == dices.size() - 1) {
+            return sideMax;
+        }
+
+        return sideMax + calculateSumWithBottom(index + 1, topValue);
     }
 }
 
 public class Main {
-    static int max = -1;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        String[] tokens;
+        List<Dice> dices = new ArrayList<>();
 
-        List<Dice> dice = new ArrayList<>();
-        while (n-- > 0) {
-            tokens = br.readLine().split(" ");
-            int one = Integer.parseInt(tokens[0]);
-            int two = Integer.parseInt(tokens[1]);
-            int three = Integer.parseInt(tokens[2]);
-            int four = Integer.parseInt(tokens[3]);
-            int five = Integer.parseInt(tokens[4]);
-            int six = Integer.parseInt(tokens[5]);
-
-            dice.add(new Dice(one, two, three, four, five, six));
-        }
-
-       getDiceSum(dice);
-
-        System.out.println(max);
-    }
-
-    private static void getDiceSum(List<Dice> dice) {
-        int bottom;
-        int top;
-        int sum;
-
-        bottom = bottomA(dice, 0)[0];
-        top = bottomA(dice, 0)[1];
-        sum = getMax(bottom, top);
-        calculate(1, dice, sum, bottom, top);
-
-        bottom = bottomB(dice, 0)[0];
-        top = bottomB(dice, 0)[1];
-        sum = getMax(bottom, top);
-        calculate(1, dice, sum, bottom, top);
-
-        bottom = bottomC(dice, 0)[0];
-        top = bottomC(dice, 0)[1];
-        sum = getMax(bottom, top);
-        calculate(1, dice, sum, bottom, top);
-
-        bottom = bottomD(dice, 0)[0];
-        top = bottomD(dice, 0)[1];
-        sum = getMax(bottom, top);
-        calculate(1, dice, sum, bottom, top);
-
-        bottom = bottomE(dice, 0)[0];
-        top = bottomE(dice, 0)[1];
-        sum = getMax(bottom, top);
-        calculate(1, dice, sum, bottom, top);
-
-        bottom = bottomF(dice, 0)[0];
-        top = bottomF(dice, 0)[1];
-        sum = getMax(bottom, top);
-        calculate(1, dice, sum, bottom, top);
-    }
-
-    private static void calculate(int depth, List<Dice> dice, int sum, int bottom, int top) {
-        if (depth == dice.size()) {
-            max = Math.max(max, sum);
-            return;
-        }
-
-        Dice newDice = dice.get(depth);
-
-        int newBottom;
-        int newTop;
-
-        newBottom = bottomA(dice, depth)[0];
-        newTop = bottomA(dice, depth)[1];
-        if (newBottom == top) {
-            calculate(depth + 1, dice, sum + getMax(newBottom, newTop), newBottom, newTop);
-        }
-
-        newBottom = bottomB(dice, depth)[0];
-        newTop = bottomB(dice, depth)[1];
-        if (newBottom == top) {
-            calculate(depth + 1, dice, sum + getMax(newBottom, newTop), newBottom, newTop);
-        }
-
-        newBottom = bottomC(dice, depth)[0];
-        newTop = bottomC(dice, depth)[1];
-        if (newBottom == top) {
-            calculate(depth + 1, dice, sum + getMax(newBottom, newTop), newBottom, newTop);
-        }
-
-        newBottom = bottomD(dice, depth)[0];
-        newTop = bottomD(dice, depth)[1];
-        if (newBottom == top) {
-            calculate(depth + 1, dice, sum + getMax(newBottom, newTop), newBottom, newTop);
-        }
-
-        newBottom = bottomE(dice, depth)[0];
-        newTop = bottomE(dice, depth)[1];
-        if (newBottom == top) {
-            calculate(depth + 1, dice, sum + getMax(newBottom, newTop), newBottom, newTop);
-        }
-
-        newBottom = bottomF(dice, depth)[0];
-        newTop = bottomF(dice, depth)[1];
-        if (newBottom == top) {
-            calculate(depth + 1, dice, sum + getMax(newBottom, newTop), newBottom, newTop);
-        }
-    }
-
-    private static int[] bottomA(List<Dice> dice, int seq) {
-        int bottom = dice.get(seq).getOne();
-        int top = dice.get(seq).getSix();
-
-        return new int[]{bottom, top};
-    }
-
-    private static int[] bottomB(List<Dice> dice, int seq) {
-        int bottom = dice.get(seq).getTwo();
-        int top = dice.get(seq).getFour();
-
-        return new int[]{bottom, top};
-    }
-
-    private static int[] bottomC(List<Dice> dice, int seq) {
-        int bottom = dice.get(seq).getThree();
-        int top = dice.get(seq).getFive();
-
-        return new int[]{bottom, top};
-    }
-
-    private static int[] bottomD(List<Dice> dice, int seq) {
-        int bottom = dice.get(seq).getFour();
-        int top = dice.get(seq).getTwo();
-
-        return new int[]{bottom, top};
-    }
-
-    private static int[] bottomE(List<Dice> dice, int seq) {
-        int bottom = dice.get(seq).getFive();
-        int top = dice.get(seq).getThree();
-
-        return new int[]{bottom, top};
-    }
-
-    private static int[] bottomF(List<Dice> dice, int seq) {
-        int bottom = dice.get(seq).getSix();
-        int top = dice.get(seq).getOne();
-
-        return new int[]{bottom, top};
-    }
-
-    private static int getMax(int bottom, int top) {
-        int maxVal = 0;
-        for (int i = 1; i <= 6; i++) {
-            if (i != bottom && i != top) {
-                maxVal = Math.max(maxVal, i);
+        for (int i = 0; i < n; i++) {
+            String[] tokens = br.readLine().split(" ");
+            int[] faces = new int[6];
+            for (int j = 0; j < 6; j++) {
+                faces[j] = Integer.parseInt(tokens[j]);
             }
+            dices.add(new Dice(faces));
         }
-        return maxVal;
+
+        DiceStack stack = new DiceStack(dices);
+        System.out.println(stack.calculateMaxSideSum());
     }
 }
