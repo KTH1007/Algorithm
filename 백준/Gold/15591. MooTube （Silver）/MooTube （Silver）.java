@@ -6,8 +6,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
+class Edge{
+    private int to;
+    private int usado;
+
+    public Edge(int to, int usado) {
+        this.to = to;
+        this.usado = usado;
+    }
+
+    public int getTo() {
+        return to;
+    }
+
+    public int getUsado() {
+        return usado;
+    }
+}
+
 public class Main {
-    static List<int[]>[] edges;
+    static List<Edge>[] edges;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -26,8 +44,8 @@ public class Main {
             int b = Integer.parseInt(tokens[1]);
             int c = Integer.parseInt(tokens[2]);
 
-            edges[a].add(new int[]{b, c});
-            edges[b].add(new int[]{a, c});
+            edges[a].add(new Edge(b, c));
+            edges[b].add(new Edge(a, c));
         }
 
         StringBuilder sb = new StringBuilder();
@@ -45,31 +63,31 @@ public class Main {
 
     private static int bfs(int k, int start, int n) {
         boolean[] visited = new boolean[n + 1];
-        Queue<int[]> queue = new ArrayDeque<>();
-        queue.add(new int[]{start, Integer.MAX_VALUE});
-        int count = 0;
         visited[start] = true;
 
-        while (!queue.isEmpty()) {
-            int[] current = queue.poll();
-            int node = current[0];
-            int minUsado = current[1];
+        Queue<Edge> queue = new ArrayDeque<>();
+        queue.add(new Edge(start, Integer.MAX_VALUE));
+        int count = 0;
 
-            for (int[] edge : edges[node]) {
-                int nextNode = edge[0];
-                int edgeUsagdo = edge[1];
+        while (!queue.isEmpty()) {
+            Edge edge = queue.poll();
+            int node = edge.getTo();
+            int minUsado = edge.getUsado();
+
+            for (Edge e : edges[node]) {
+                int nextNode = e.getTo();
+                int newMinUsado = Math.min(minUsado, e.getUsado());
 
                 if (visited[nextNode]) continue;
-
-                int newMinUsado = Math.min(minUsado, edgeUsagdo);
 
                 if (newMinUsado >= k) {
                     count++;
                     visited[nextNode] = true;
-                    queue.add(new int[]{nextNode, newMinUsado});
+                    queue.add(new Edge(nextNode, newMinUsado));
                 }
             }
         }
+
         return count;
     }
 }
