@@ -1,8 +1,9 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.TreeMap;
+import java.util.Deque;
 
 public class Main {
     static int min = Integer.MAX_VALUE;
@@ -23,34 +24,28 @@ public class Main {
 
         Arrays.sort(v);
 
+        Deque<int[]> deque = new ArrayDeque<>();
         int windowSize = n - k;
+        int m = windowSize - 1;
 
-        TreeMap<Integer, Integer> diffCount = new TreeMap<>();
-        for (int i = 0; i < windowSize - 1; i++) {
-            int diff = v[i + 1] - v[i];
-            diffCount.merge(diff, 1, Integer::sum);
-        }
+        for (int i = 0; i < n - 1; i++) {
+            int[] now = new int[]{i, v[i + 1] - v[i]};
 
-        int M = v[windowSize - 1] - v[0];
-        int m = diffCount.firstKey();
-        min = Math.min(min, M + m);
-
-        for (int i = 1; i <= k; i++) {
-            int left = i;
-            int right = i + windowSize - 1;
-
-            int removeDiff = v[left] - v[left - 1];
-            diffCount.merge(removeDiff, -1, Integer::sum);
-            if (diffCount.get(removeDiff) == 0) {
-                diffCount.remove(removeDiff);
+            if (!deque.isEmpty() && deque.peekFirst()[0] <= i - m) {
+                deque.removeFirst();
             }
 
-            int addDiff = v[right] - v[right - 1];
-            diffCount.merge(addDiff, 1, Integer::sum);
+            while (!deque.isEmpty() && deque.peekLast()[1] > now[1]) {
+                deque.removeLast();
+            }
 
-            M = v[right] - v[left];
-            m = diffCount.firstKey();
-            min = Math.min(min, M + m);
+            deque.add(now);
+
+            if (i + 1 >= m) {
+                int m_value = deque.peekFirst()[1];
+                int M_value = v[i + 1] - v[i + 1 - m];
+                min = Math.min(min, M_value + m_value);
+            }
         }
 
         System.out.println(min);
