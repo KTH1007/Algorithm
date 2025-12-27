@@ -1,9 +1,10 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
@@ -15,25 +16,33 @@ public class Main {
         }
 
         int[] dpInc = new int[n];
+        List<Integer> lisInc = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
-            dpInc[i] = 1;
-            for (int j = 0; j < i; j++) {
-                if (arr[i] > arr[j]) {
-                    dpInc[i] = Math.max(dpInc[i], dpInc[j] + 1);
-                }
+            int position = binarySearch(lisInc, arr[i]);
+
+            if (position == lisInc.size()) {
+                lisInc.add(arr[i]);
+            } else {
+                lisInc.set(position, arr[i]);
             }
+
+            dpInc[i] = lisInc.size();
         }
 
         int[] dpDec = new int[n];
+        List<Integer> lisDec = new ArrayList<>();
 
         for (int i = n - 1; i >= 0; i--) {
-            dpDec[i] = 1;
-            for (int j = i + 1; j < n; j++) {
-                if (arr[i] > arr[j]) {
-                    dpDec[i] = Math.max(dpDec[i], dpDec[j] + 1);
-                }
+            int position = binarySearch(lisDec, arr[i]);
+
+            if (position == lisDec.size()) {
+                lisDec.add(arr[i]);
+            } else {
+                lisDec.set(position, arr[i]);
             }
+
+            dpDec[i] = lisDec.size();
         }
 
         int max = 0;
@@ -42,5 +51,21 @@ public class Main {
         }
 
         System.out.println(max);
+    }
+
+    private static int binarySearch(List<Integer> list, int target) {
+        int left = 0;
+        int right = list.size();
+
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (list.get(mid) < target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+
+        return left;
     }
 }
