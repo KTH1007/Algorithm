@@ -10,6 +10,8 @@ public class Main {
     static int[][] map;
     static int[] dx = {1, -1, 0, 0};
     static int[] dy = {0, 0, -1, 1};
+    static boolean[][] visited;
+    static int[][] melt;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -19,6 +21,8 @@ public class Main {
         m = Integer.parseInt(tokens[1]);
 
         map = new int[n][m];
+        visited = new boolean[n][m];
+        melt = new int[n][m];
 
         for (int i = 0; i < n; i++) {
             tokens = br.readLine().split(" ");
@@ -47,7 +51,12 @@ public class Main {
 
     // 덩어리 탐색
     private static int countIcebergs() {
-        boolean[][] visited = new boolean[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                visited[i][j] = false;
+            }
+        }
+
         int count = 0;
 
         for (int i = 0; i < n; i++) {
@@ -87,7 +96,11 @@ public class Main {
 
     // 인접한 바다 수만큼 빙하 녹이기
     private static void decreaseIcebergs() {
-        int[][] melt = new int[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                melt[i][j] = 0;
+            }
+        }
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
