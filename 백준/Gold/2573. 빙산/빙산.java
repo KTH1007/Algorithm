@@ -41,7 +41,7 @@ public class Main {
             }
 
             time++;
-            map = decreaseIcebergs();
+            decreaseIcebergs();
         }
     }
 
@@ -86,37 +86,29 @@ public class Main {
     }
 
     // 인접한 바다 수만큼 빙하 녹이기
-    private static int[][] decreaseIcebergs() {
-        Queue<int[]> queue = new ArrayDeque<>();
-        int[][] temp = new int[n][m];
+    private static void decreaseIcebergs() {
+        int[][] melt = new int[n][m];
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (map[i][j] > 0) {
-                    queue.add(new int[]{i, j});
+                    int count = 0;
+                    for (int k = 0; k < 4; k++) {
+                        int nx = i + dx[k];
+                        int ny = j + dy[k];
+                        if (nx >= 0 && nx < n && ny >= 0 && ny < m && map[nx][ny] == 0) {
+                            count++;
+                        }
+                    }
+                    melt[i][j] = count;
                 }
             }
         }
 
-        while (!queue.isEmpty()) {
-            int[] current = queue.poll();
-            int x = current[0];
-            int y = current[1];
-
-            int count = 0;
-            for (int i = 0; i < 4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-
-                if (nx < 0 || nx >= n || ny < 0 || ny >= m || map[nx][ny] > 0) {
-                    continue;
-                }
-                count++;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                map[i][j] = Math.max(0, map[i][j] - melt[i][j]);
             }
-
-            temp[x][y] = Math.max(0, map[x][y] - count);
         }
-
-        return temp;
     }
 }
