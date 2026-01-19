@@ -14,9 +14,7 @@ public class Main {
         while (t-- > 0) {
             int q = Integer.parseInt(br.readLine());
 
-            Queue<Long> minHeap = new PriorityQueue<>();
-            Queue<Long> maxHeap = new PriorityQueue<>((o1, o2) -> Long.compare(o2, o1));
-            Map<Long, Integer> map = new HashMap<>();
+            TreeMap<Long, Integer> map = new TreeMap<>();
 
             for (int i = 0; i < q; i++) {
                 tokens = br.readLine().split(" ");
@@ -25,50 +23,28 @@ public class Main {
                 long num = Integer.parseInt(tokens[1]);
 
                 if ("I".equals(str)) {
-                    minHeap.add(num);
-                    maxHeap.add(num);
                     map.put(num, map.getOrDefault(num, 0) + 1);
 
                 } else {
-                    if (minHeap.isEmpty() || maxHeap.isEmpty()) {
+                    if (map.isEmpty()) {
                         continue;
-                    }
+                    } else {
+                        long target = (num == 1) ? map.lastKey() : map.firstKey();
 
-                    if (num == 1) {
-                        while (!maxHeap.isEmpty() && map.getOrDefault(maxHeap.peek(), 0) == 0) {
-                            maxHeap.poll();
-                        }
-
-                        if (!maxHeap.isEmpty()) {
-                            long maxNum = maxHeap.poll();
-                            map.put(maxNum, map.get(maxNum) - 1);
-                        }
-                    } else if (num == -1) {
-                        while (!minHeap.isEmpty() && map.getOrDefault(minHeap.peek(), 0) == 0) {
-                            minHeap.poll();
-                        }
-
-                        if (!minHeap.isEmpty()) {
-                            long minNum = minHeap.poll();
-                            map.put(minNum, map.get(minNum) - 1);
+                        int count = map.get(target);
+                        if (count == 1) {
+                            map.remove(target);
+                        } else {
+                            map.put(target, map.get(target) - 1);
                         }
                     }
                 }
             }
 
-
-            while (!minHeap.isEmpty() && map.getOrDefault(minHeap.peek(), 0) == 0) {
-                minHeap.poll();
-            }
-
-            while (!maxHeap.isEmpty() && map.getOrDefault(maxHeap.peek(), 0) == 0) {
-                maxHeap.poll();
-            }
-
-            if (maxHeap.isEmpty() || minHeap.isEmpty()) {
-                sb.append("EMPTY\n");
+            if (map.isEmpty()) {
+                sb.append("EMPTY").append("\n");
             } else {
-                sb.append(maxHeap.peek()).append(" ").append(minHeap.peek()).append("\n");
+                sb.append(map.lastKey()).append(" ").append(map.firstKey()).append("\n");
             }
         }
 
