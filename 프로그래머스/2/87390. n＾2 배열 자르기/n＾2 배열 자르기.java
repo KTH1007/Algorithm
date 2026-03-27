@@ -1,13 +1,27 @@
+import java.util.*;
+
 class Solution {
     public int[] solution(int n, long left, long right) {
-        int[] answer = new int[(int) (right - left) + 1];
         
-        int count = 0;
+        int index = 0;
+        int[] answer = new int[(int) (right - left) + 1];
         for (long i = left; i <= right; i++) {
-            int row = (int) (i % n);
-            int col = (int) (i / n);
-            answer[count++] = Math.max(row, col) + 1;
+            long row = i / n + 1;
+            long col = i % n + 1;
+            
+            answer[index++] = (int) (Math.max(row, col));
         }
+        
+        // n == 4 left = 2, right 5
+        // row=2, col=1
+        // 2, 4,
+        
+        // 1 2 3 4
+        // 2 2 3 4
+        // 3 3 3 4
+        // 4 4 4 4
+        
+        // 1 2 3 4 2 2 3 4 3 3 3 4 4 4 4 4
         return answer;
     }
 }
