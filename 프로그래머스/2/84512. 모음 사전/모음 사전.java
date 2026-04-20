@@ -1,32 +1,30 @@
 import java.util.*;
 
 class Solution {
-    // 문자열을 담을 결과 리스트
+    
     static List<String> result = new ArrayList<>();
+    static String[] arr = {"A", "E", "I", "O", "U"};
+    
     public int solution(String word) {
-        // 모음 배열 생성
-        String[] alphabet = {"A", "E", "I", "O", "U"};
+        int answer = 0;
         
-        dfs(0, new ArrayList<>(), alphabet);
+        // a, aa, aaa, aaaa, aaaaa, aaaae, aaaai, aaaao, aaaau
+        // aaae aaai aaao aaau
+        // aaaea aaaee aaaei aaaeo aaaeu
         
-        int answer = result.indexOf(word);
+        dfs(0, "");
+        answer = result.indexOf(word);
         return answer;
     }
     
-    private static void dfs(int depth, List<String> selected, String[] alphabet) {
-        // 결과 리스트에 삽입
-        result.add(selected.toString().replaceAll("[^A-Z]", ""));
-        
+    private static void dfs(int depth, String str) {
+        result.add(str);
         if (depth == 5) {
             return;
         }
         
-        // 재귀호출
-        for (String alpha : alphabet) {
-            selected.add(alpha);
-            dfs(depth + 1, selected, alphabet);
-            selected.remove(selected.size() - 1);
+        for (int i = 0; i < 5; i++) {
+            dfs(depth + 1, str + arr[i]);
         }
-        
     }
 }
