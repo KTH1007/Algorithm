@@ -1,32 +1,32 @@
 import java.util.*;
+
+// 모든 음식 K 이상
+// 가장 맵지 않은 지수 + (두번 째 * 2)
+// 모든 음식이 K 이상 -> 정렬시 맨 처음이 K 이상 -> pq?
+// 섞어야 하는 최소 횟수
+
 class Solution {
     public int solution(int[] scoville, int K) {
         int answer = 0;
         
-        // 최소힙 사용
-        Queue<Integer> queue = new PriorityQueue<>();
+        Queue<Long> pq = new PriorityQueue<>((o1, o2) -> o1.compareTo(o2));
         
         for (int i : scoville) {
-            queue.add(i);
+            pq.offer((long) i);
         }
         
-        
-        // 만약 k를 넘지 못했을 경우 flag는 false로 설정
-        boolean flag = false;
-        while (queue.size() > 1) {
-            if (queue.peek() >= K) {
-                flag = true;
-                break;
-            }
+        while (pq.size() > 1 && pq.peek() < K) {
+            long current = pq.poll();
+            long next = pq.poll();
             
-            queue.add(queue.poll() + queue.poll() * 2);
+            pq.offer(current + (next * 2));
             answer++;
         }
         
-        // queue size가 1이지만 값이 K를 넘긴 경우
-        if (queue.peek() >= K) return answer;
+        if (pq.peek() < K) {
+            return -1;
+        }
         
-        if (!flag) answer = -1;
         return answer;
     }
 }
