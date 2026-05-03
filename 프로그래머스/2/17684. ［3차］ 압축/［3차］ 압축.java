@@ -2,39 +2,54 @@ import java.util.*;
 
 class Solution {
     public int[] solution(String msg) {
+        int[] answer = {};
         
-        int count = 1;
-        
-        HashMap<String, Integer> map = new HashMap<>();
-        List<Integer> list = new ArrayList<>();
-        
-        for (char c = 'A'; c <= 'Z'; c++) {
-            map.put(Character.toString(c), count++);
+        List<String> strList = new ArrayList<>();
+        for (int i = 0; i < 26; i++) {
+            char c = (char) (65 + i);
+            strList.add(c + "");
         }
         
+        List<Integer> numbers = new ArrayList<>();
+        
         for (int i = 0; i < msg.length(); i++) {
-            int length = 1;
-            while (msg.length() >= i + length && map.containsKey(msg.substring(i, i + length))) {
-                length++;
-            }
-            
-            if (i + length > msg.length()) {
-                list.add(map.get(msg.substring(i)));
+            if (i == msg.length() - 1) {
+                char c = msg.charAt(i);
+                numbers.add(strList.indexOf(c + "") + 1);
                 break;
             }
             
-            map.put(msg.substring(i, i + length), count++);
-            list.add(map.get(msg.substring(i, i + length - 1)));
-            
-            if (i > 0) {
-                i = i + length - 2;
-            }
+            String s = getStr(i, msg, strList);
+            numbers.add(strList.indexOf(s) + 1);
+            i += s.length() - 1;
         }
         
-        int[] answer = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            answer[i] = list.get(i);
+        answer = new int[numbers.size()];
+        for (int i = 0; i < numbers.size(); i++) {
+            answer[i] = numbers.get(i);
         }
         return answer;
+    }
+    
+    // i부터 i + n 까지 탐색하면서 마지막으로 존재하는 문자열 반환 후 새로운 문자열은 추가
+    private static String getStr(int i, String msg, List<String> strList) {
+        int right = i;
+        String subStr = msg.substring(i, right + 1);
+
+        // System.out.println("1");
+        
+        while(strList.contains(subStr) && (right + 1) < msg.length()) {
+            right++;
+            subStr = msg.substring(i, right + 1);
+        }
+        
+        subStr = msg.substring(i, right + 1);
+
+        if (!strList.contains(subStr)) {
+            strList.add(subStr);
+            return msg.substring(i, right);
+        } else {
+            return subStr;
+        }
     }
 }
