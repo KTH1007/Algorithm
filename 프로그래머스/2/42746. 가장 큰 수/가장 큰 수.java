@@ -1,32 +1,30 @@
 import java.util.*;
 
+// stirng 형으로 배열 정렬
+
 class Solution {
-    
     public String solution(int[] numbers) {
         String answer = "";
-        List<String> list = new ArrayList<>();
         
-        // 문자열 리스트로 변환
-        for (int num : numbers) {
-            list.add(String.valueOf(num));
+        String[] str = new String[numbers.length];
+        for (int i = 0; i < numbers.length; i++) {
+            str[i] = Integer.toString(numbers[i]);
         }
         
-        // 두 수를 합친 값으로 내림차순 정렬
-        list.sort((o1, o2) -> {
-            String s1 = o1 + o2;
-            String s2 = o2 + o1;
-            return s2.compareTo(s1);
-        });
+        Arrays.sort(str, (o1, o2) -> (o1 + o2).compareTo(o2 + o1));
         
         StringBuilder sb = new StringBuilder();
-        
-        for (String num : list) {
-            sb.append(num);
+        for (int i = str.length - 1; i >= 0; i--) {
+            sb.append(str[i]);
         }
         
-        answer = sb.toString();
+        String temp = sb.toString();
+        if (temp.charAt(0) == '0') {
+            return "0";
+        }
         
-        if (answer.charAt(0) == '0') answer = "0";
+        answer = temp;
+        
         return answer;
     }
 }
