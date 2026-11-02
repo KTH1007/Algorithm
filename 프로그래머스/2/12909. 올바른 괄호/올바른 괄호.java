@@ -4,34 +4,30 @@ class Solution {
     boolean solution(String s) {
         boolean answer = true;
 
-        char[] arr = new char[s.length()];
+        Deque<Character> queue = new ArrayDeque<>();
+        Deque<Character> queue2 = new ArrayDeque<>();
+        
         for (int i = 0; i < s.length(); i++) {
-            arr[i] = s.charAt(i);
+            char c = s.charAt(i);
+            queue.add(c);
         }
         
-        int count1 = 0;
-        int count2 = 0;
+        char prev = queue.poll();
+        if (prev == ')') return false;
+        queue2.add(prev);
         
-        for (int i = 0; i < arr.length; i++) {
-            if (count1 == 0 && arr[i] == ')') {
-                return false;
+        while (!queue.isEmpty()) {
+            prev = queue.poll();
+            if (prev == ')') {
+                if (!queue2.isEmpty() &&queue2.peekLast() == '(')
+                    queue2.poll();
+                else queue2.add(prev);
+            } else {
+                queue2.add(prev);
             }
-            
-            if (arr[i] == '(') {
-                count1++;
-            } else if (arr[i] == ')') {                
-                if (count1 > 0) {
-                    count1--;
-                } else {
-                    count2++;
-                }
-            }
-            
         }
-        
-        if (count1 != 0 || count2 != 0) {
-            return false;
-        }
+
+        if (!queue2.isEmpty()) answer = false;
         return answer;
     }
 }
