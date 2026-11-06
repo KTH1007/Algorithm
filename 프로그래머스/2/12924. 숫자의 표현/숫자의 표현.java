@@ -1,37 +1,21 @@
 import java.util.*;
 
 class Solution {
-    static int count = 0;
-    
+    static int answer = 0;
     public int solution(int n) {
-        if (n <= 2) {
-            return 1;
+        for (int i = 1; i <= n; i++) {
+            sum(i, n);
         }
-        
-        return twoPointer(n);
+        return answer;
     }
     
-    private static int twoPointer(int n) {
-        int count = 0;
-        
-        int left = 1;
-        int right = 2;
-        int sum = left + right;
-        
-        while (left <= right) {
-            if (sum == n) {
-                count++;
-                sum -= left;
-                left++;
-            } else if (sum > n) {
-                sum -= left;
-                left++;
-            } else if (sum < n) {
-                right++;
-                sum += right;
-            }
+    private static void sum(int start, int n) {
+        int num = 0;
+        while (num < n) {
+            num += start;
+            start++;
         }
         
-        return count;
+        if (num == n) answer++;
     }
 }
