@@ -4,30 +4,20 @@ class Solution
 {
     public int solution(String s)
     {
+        int answer = 0;
 
-        if (remove(s).length() == 0) {
-            return 1;
+        Deque<Character> deque = new ArrayDeque<>();
+        
+        deque.add(s.charAt(0));
+        
+        for (int i = 1; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!deque.isEmpty() && deque.getLast() == c) deque.pollLast();
+            else deque.add(c);
         }
         
-        return 0;
-    }
-    
-    private String remove(String s) {
-        StringBuilder sb = new StringBuilder();
-        Deque<Character> stack = new ArrayDeque<>();
-        
-        for (int i = 0; i < s.length(); i++) {
-            if (!stack.isEmpty() && stack.peek() == s.charAt(i)) {
-                stack.pop();
-            } else {
-                stack.push(s.charAt(i));
-            }
-        }
-        
-        while (!stack.isEmpty()) {
-            sb.append(stack.pop());
-        }
-        sb.reverse();
-        return sb.toString();
+        if (deque.isEmpty()) answer = 1;
+
+        return answer;
     }
 }
