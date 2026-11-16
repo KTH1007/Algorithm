@@ -4,16 +4,22 @@ class Solution {
     public boolean solution(String[] phone_book) {
         boolean answer = true;
         
-        // 문자열 특성을 이용하기 위해 정렬
         Arrays.sort(phone_book);
         
-        // 해당 문자열이 접두어인 경우 그 뒤에 접두어를 사용하는 문자열이 오게 됨
-        for (int i = 0; i < phone_book.length - 1; i++) {
-            if (phone_book[i + 1].startsWith(phone_book[i])) {
-                answer = false;
+        /*
+        119 1195524421 
+        일단 현재값이 앞에 크기보다 커야 됨
+        그리고 substring (0, arr[i - 1].length)가 같은지 확인 
+        */
+        
+        for (int i = 1; i < phone_book.length; i++) {
+            if (phone_book[i].length() > phone_book[i - 1].length()) {
+                if (phone_book[i - 1].equals(phone_book[i].substring(0, phone_book[i - 1].length()))) {
+                    answer = false;
+                    break;
+                }
             }
         }
-        
         return answer;
     }
 }
